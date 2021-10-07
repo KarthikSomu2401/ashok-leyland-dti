@@ -1,18 +1,25 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
-const envs = require("./configurations");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const bcrypt = require("bcrypt");
+const SALT_WORK_FACTOR = 10;
 
-class Authentication extends Model {}
-Authentication.init({
-    username: DataTypes.STRING,
-    password: DataTypes.STRING
-}, { sequelize, modelName: 'authentication' });
+let Authentication = new Schema({
+    username: { type: String, required: true, index: { unique: true } },
+    password: { type: String, required: true },
+});
 
-(async() => {
-    await sequelize.sync();
-    const test_user = await Authentication.create({
-        username: `${envs.TST_USR}`,
-        password: `${envs.TST_PWD}`
+Authentication.pre("save", function(next) {
+    var user = this;
+    if (!user.isModified("password")) return next();
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) return next(err);
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+        });
     });
-    console.log(test_user.toJSON());
-})();
+});
+
+// Export the model
+module.exports = mongoose.model("Authentication", Authentication, "auth_access");
