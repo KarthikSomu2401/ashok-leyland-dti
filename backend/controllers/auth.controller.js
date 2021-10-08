@@ -33,6 +33,7 @@ exports.login_user = function(req, res, next) {
                         if (result == true) {
                             req.user = {
                                 username: user.username,
+                                password: user.password,
                             };
                             let token = jwt.sign(req.user, envs.SECRET, {
                                 expiresIn: "2h", // expires in 2 hours

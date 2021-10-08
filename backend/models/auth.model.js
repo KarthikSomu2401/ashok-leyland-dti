@@ -22,4 +22,4 @@ Authentication.pre("save", function(next) {
 });
 
 // Export the model
-module.exports = mongoose.model("Authentication", Authentication, "auth_access");
+module.exports = mongoose.model("Authentication", Authentication, "Authentication");
