@@ -1,0 +1,40 @@
+<form class="form-spacing" #testDetailsForm="ngForm" (ngSubmit)="onSubmit()" >
+    <h3 class="heading-2">{{formName | splitAndTitleCase}}</h3>
+    <hr class="class-2"><br/>
+    <div class="form-group">
+        <div style="width: 50%; display: inline-block">
+            <label for="testType">Type</label>
+            <select class="form-select" [(ngModel)]="testDetails.testType" name="testType" style="width: 90%" id="testType" aria-label="Default select example">
+                <option selected>Select a Type</option>
+                <option value="Training">Training</option>
+                <option value="Test">Test</option>
+            </select>
+        </div>
+        <div style="width: 50%; display: inline-block">
+            <label for="sensorCount">Sensor Count</label>
+            <input type="number" class="form-control" id="sensorCount" [(ngModel)]="testDetails.sensorCount" name="sensorCount" aria-describedby="sensorCountHelp" placeholder="Enter Sensor Count">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="registrationNo">Registration No</label>
+        <input type="text" class="form-control" id="registrationNo" [(ngModel)]="testDetails.registrationNo" name="registrationNo" aria-describedby="registrationNoHelp" placeholder="Enter Registration No">
+    </div>
+    <div class="form-group">
+        <label for="personName">Person Name</label>
+        <input type="text" class="form-control" id="personName" [(ngModel)]="testDetails.personName" name="personName" aria-describedby="personNameHelp" placeholder="Enter Person Name">
+    </div>
+    <div class="form-group">
+        <label for="dateOfTest">Date of Test</label>
+        <input type="date" class="form-control" id="dateOfTest" [(ngModel)]="testDetails.dateOfTest" name="dateOfTest" aria-describedby="dateOfTestHelp">
+    </div>
+    <div class="form-group">
+        <label for="instructorName">Instructor Name</label>
+        <input type="text" class="form-control" id="instructorName" [(ngModel)]="testDetails.instructorName" name="instructorName" aria-describedby="instructorNameHelp" placeholder="Enter Instructor Name">
+    </div>
+    <div class="form-group">
+        <label for="vehicleName">Vehicle Name</label>
+        <input type="text" class="form-control" id="vehicleName" [(ngModel)]="testDetails.vehicleName" name="vehicleName" aria-describedby="vehicleNameHelp" placeholder="Enter Vehicle Name">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { JsonFormData } from '../json-form/json-form.component';
+import { FormService } from "../../_services/form.service";
 
 @Component({
   selector: 'app-home',
@@ -9,13 +9,22 @@ import { JsonFormData } from '../json-form/json-form.component';
 })
 export class HomeComponent implements OnInit {
   public formData: JsonFormData | any;
-  constructor(private http: HttpClient) { }
+  public formName: any;
+  isFormFetched = false;
+
+  constructor(private formService: FormService) { }
+
   ngOnInit() {
-    this.http
-      .get('/assets/my-form.json')
-      .subscribe((formData: any) => {
-        this.formData = formData;
-      });
+    this.formService.getform("user_testing_form").subscribe(
+      data => {
+        this.formData = data?.formStructure;
+        this.formName = data?.name;
+        this.isFormFetched = true;
+      },
+      err => {
+        this.isFormFetched = false;
+      }
+    );
   }
 
 }

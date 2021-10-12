@@ -1,0 +1,16 @@
+.form-spacing {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.form-spacing .form-group {
+    padding-bottom: 2%;
+}
+
+hr.class-2 {
+    border-top: 3px solid #0d6efd;
+}
+
+h3.heading-2 {
+    color: #0d6efd;
+}

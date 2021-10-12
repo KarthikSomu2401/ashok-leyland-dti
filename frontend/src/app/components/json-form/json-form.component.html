@@ -1,7 +1,7 @@
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-    <span *ngFor="let control of jsonFormData?.controls">
-        <mat-label *ngIf="control.label !== ''">{{ control.label }}</mat-label>
-        <input matInput
+  <div class="form-group" *ngFor="let control of jsonFormData?.controls">
+    <label *ngIf="control.label !== ''">{{ control.label }}</label>
+    <input matInput
       *ngIf="
         [
           'text',
@@ -15,36 +15,35 @@
       "
       [type]="control.type"
       [formControlName]="control.name"
-      [value]="control.value"
+      [value]="control.value" class="form-control"
 />
-        <textarea matInput
+    <textarea matInput
       *ngIf="control.type === 'textarea'"
       [formControlName]="control.name"
-      [value]="control.value"
+      [value]="control.value" class="form-control" 
     ></textarea>
-        <mat-checkbox
+    <mat-checkbox
       *ngIf="control.type === 'checkbox'"
       [formControlName]="control.name"
-      [checked]="control.value"
+      [checked]="control.value"  class="form-check-label"
     ></mat-checkbox>
-        <!--<mat-toggle
+    <mat-slide-toggle
       *ngIf="control.type === 'toggle'"
       [formControlName]="control.name"
       [checked]="control.value"
-    ></mat-toggle>-->
-        <!--<mat-range
+    ></mat-slide-toggle>
+    <!--<mat-slider
       *ngIf="control.type === 'range'"
       [min]="control.optmats.min"
       [max]="control.optmats.max"
       [formControlName]="control.name"
     >
-            <mat-icon
+      <mat-icon
         size="small"
         slot="start"
-        [name]="control.optmats.icon"
-      ></mat-icon>
-            <mat-icon slot="end" [name]="control.optmats.icon"></mat-icon>
-        </mat-range>-->
-    </span>
-    <button mat-button expand="full" type="submit">Submit</button>
+      >{{control.optmats.icon}}</mat-icon>
+      <mat-icon slot="end">{{control.optmats.icon}}</mat-icon>
+    </mat-slider>-->
+  </div>
+  <button mat-button expand="full" type="submit">Submit</button>
 </form>
