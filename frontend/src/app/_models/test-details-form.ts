@@ -1,5 +1,6 @@
 export class TestDetailsForm {
-
+    
+    public _id?: string;
     public testType?: string;
     public sensorCount?: number;
     public registrationNo?: string;

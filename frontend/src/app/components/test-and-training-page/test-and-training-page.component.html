@@ -1,1 +1,78 @@
-{{ testDetails | json }}
+<h4 class="heading text-primary">
+    <u>PRACTICAL TEST</u>
+</h4>
+<div class="col-lg-12 col-md-12 col-sm-12" *ngIf="isDetailsFetched">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <label>Registration No </label>
+            <p>{{testDetails.registrationNo}}</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <label>Name </label>
+            <p>{{testDetails.personName}}</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <label>Date of Test </label>
+            <p>{{testDetails.dateOfTest}}</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <label>Instructor </label>
+            <p>{{testDetails.instructorName}}</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <label>Vehicle Name </label>
+            <p>{{testDetails.vehicleName}}</p>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <h4>Test Result</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Loop Crossed</th>
+                    <th>Duration</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Test Name</td>
+                    <td>Loop Crossed</td>
+                    <td>Duration</td>
+                    <td>Marks</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Forward Movement</th>
+                    <th>Backward Movement</th>
+                    <th>Over Speed</th>
+                    <th>Low Speed</th>
+                    <th>Stoppage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Test Name</td>
+                    <td>Loop Crossed</td>
+                    <td>Duration</td>
+                    <td>Marks</td>
+                    <td>Marks</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -30,4 +30,8 @@ export class FormService {
     }, httpOptions);
   }
 
+  getTestDetails(testId: string): Observable<any> {
+    return this.http.get(AUTH_API + 'getTestDetails/' + testId , httpOptions);
+  }
+
 }

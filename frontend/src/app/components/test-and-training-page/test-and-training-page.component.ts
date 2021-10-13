@@ -10,10 +10,9 @@ import { TestDetailsForm } from 'src/app/_models/test-details-form';
 })
 export class TestAndTrainingPageComponent implements OnInit {
 
-  @Input()
-  testId: any;
   testDetails: TestDetailsForm | any;
   routeState: any;
+  isDetailsFetched: Boolean = false;
 
   constructor(private router: Router, private activatedroute: ActivatedRoute, private formService: FormService) {
     /* let nav: Navigation | any = this.router.getCurrentNavigation();
@@ -24,8 +23,10 @@ export class TestAndTrainingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formServic
-    console.log(this.activatedroute.snapshot.paramMap.get("id"));
+    this.formService.getTestDetails(this.activatedroute.snapshot.paramMap.get("id")!).subscribe((response) => {
+      this.testDetails = response;
+      this.isDetailsFetched = true;
+    })
   }
 
 }
