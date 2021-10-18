@@ -1,36 +1,30 @@
 <h4 class="heading text-primary">
     <u>PRACTICAL TEST</u>
+    <button *ngIf="isPassed" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
+        <fa-icon [icon]="faPrint"></fa-icon>
+    </button>
 </h4>
 <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="isDetailsFetched">
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-6">
             <label>Registration No </label>
-            <p>{{testDetails.registrationNo}}</p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>{{testDetails.registrationNo}}</p><br/>
             <label>Name </label>
-            <p>{{testDetails.personName}}</p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>{{testDetails.personName}}</p><br/>
             <label>Date of Test </label>
-            <p>{{testDetails.dateOfTest}}</p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6"></div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>{{testDetails.dateOfTest}}</p><br/>
             <label>Instructor </label>
-            <p>{{testDetails.instructorName}}</p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6">
+            <p>{{testDetails.instructorName}}</p><br/>
             <label>Vehicle Name </label>
             <p>{{testDetails.vehicleName}}</p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <h3>Sensors Crossed</h3><br>
+            <div style="height: 350px; overflow-y: auto">
+                <p *ngFor="let status of testStatus">
+                    Sensor {{status.sensorId}} Crossed
+                </p>
+            </div>
         </div>
     </div>
     <br><br>
@@ -40,7 +34,6 @@
             <thead>
                 <tr>
                     <th>Test Name</th>
-                    <th>Loop Crossed</th>
                     <th>Duration</th>
                     <th>Marks</th>
                 </tr>
@@ -48,29 +41,8 @@
             <tbody>
                 <tr>
                     <td>8 Track</td>
-                    <td></td>
-                    <td>174</td>
-                    <td>6.0</td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Forward Movement</th>
-                    <th>Backward Movement</th>
-                    <th>Over Speed</th>
-                    <th>Low Speed</th>
-                    <th>Stoppage</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>3</td>
-                    <td>0</td>
-                    <td>0</td>
-                    <td>11</td>
+                    <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.duration  | millisToMinutesAndSeconds}}</td>
+                    <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.status}}</td>
                 </tr>
             </tbody>
         </table>

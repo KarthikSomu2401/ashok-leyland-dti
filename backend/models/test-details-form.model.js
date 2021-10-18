@@ -8,7 +8,8 @@ let TestDetailsForm = new Schema({
     personName: { type: String, required: true },
     dateOfTest: { type: String, required: true },
     instructorName: { type: String, required: true },
-    vehicleName: { type: String, required: true }
+    vehicleName: { type: String, required: true },
+    insertedDate: { type: Date, required: true, default: Date.now() }
 });
 
 // Export the model

@@ -1,3 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+:root {
+    --primary-color: #faa064;
+    --success-color: green;
+    --primary-color-hover: #fa7e2b;
+}
+
+.navbar-color {
+    background-color: var(--primary-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.text-primary {
+    color: var(--primary-color)!important;
+}
+
+.btn-primary:focus,
+.btn-primary:hover {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+}

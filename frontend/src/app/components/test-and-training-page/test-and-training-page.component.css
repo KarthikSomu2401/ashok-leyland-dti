@@ -1,9 +1,24 @@
 h4.heading {
     padding-top: 3%;
-    padding-bottom: 1.5%;
-    text-align: center;
+    padding-bottom: 3%;
 }
 
 label {
     font-weight: bold;
+}
+
+.user-passed {
+    color: var(--success-color)!important;
+}
+
+.user-progress {
+    color: var(--primary-color)!important;
+}
+
+.rotate90 {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
 }

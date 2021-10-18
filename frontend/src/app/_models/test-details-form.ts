@@ -1,5 +1,5 @@
 export class TestDetailsForm {
-    
+
     public _id?: string;
     public testType?: string;
     public sensorCount?: number;
@@ -8,6 +8,9 @@ export class TestDetailsForm {
     public dateOfTest?: string;
     public instructorName?: string;
     public vehicleName?: string;
+    public insertedDate?: Date;
+    public duration?: Number = 0;
+    public status?: string;
 
     constructor() { }
 

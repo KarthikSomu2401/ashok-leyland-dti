@@ -7,10 +7,9 @@
     padding-bottom: 2%;
 }
 
-hr.class-2 {
-    border-top: 3px solid #0d6efd;
-}
-
 h3.heading-2 {
-    color: #0d6efd;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-decoration: underline 3px var(--primary-color);
+    color: var(--primary-color);
 }

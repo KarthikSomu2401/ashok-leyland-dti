@@ -18,7 +18,8 @@
         "mongoose": "^6.0.9",
         "mysql": "^2.18.1",
         "nodemon": "^2.0.13",
-        "sequelize": "^6.6.5"
+        "sequelize": "^6.6.5",
+        "socket.io": "^4.3.1"
     },
     "devDependencies": {
         "dotenv": "^10.0.0"
