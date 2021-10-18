@@ -14,7 +14,7 @@ exports.test_status = function(req, res, next) {
         insertedDate: {
             $gte: req.body.date
         }
-    }, function(err, docs) {
+    }).limit(16).exec(function(err, docs) {
         if (err) {
             console.log(err);
         } else {
