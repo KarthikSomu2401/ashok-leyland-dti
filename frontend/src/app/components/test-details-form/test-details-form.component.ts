@@ -26,7 +26,7 @@ export class TestDetailsFormComponent implements OnInit {
         /* this.router.navigateByUrl('/detailpage', {
           state: response
         }); */ 
-        this.router.navigate(['/detailpage', response._id]);
+        this.router.navigate(['/dashboard']);
       }, error => {
         console.log(error);
       }

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 let SensorDataSchema = new Schema({
     sensorId: { type: String, required: true },
-    insertedDate: { type: Date, required: true },
+    startDate: { type: Date, required: true },
     isLast: { type: Boolean, required: true }
 });
 

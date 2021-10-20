@@ -11,6 +11,10 @@
     background-color: var(--primary-color);
 }
 
+.navbar-brand {
+    color: white !important;
+}
+
 .btn-primary {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
@@ -24,4 +28,8 @@
 .btn-primary:hover {
     background-color: var(--primary-color-hover);
     border-color: var(--primary-color-hover);
+}
+
+.side-bar-primary {
+    background-color: var(--primary-color);
 }

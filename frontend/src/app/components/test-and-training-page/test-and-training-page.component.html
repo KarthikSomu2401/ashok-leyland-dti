@@ -1,50 +1,48 @@
-<h4 class="heading text-primary">
-    <u>PRACTICAL TEST</u>
-    <button *ngIf="isPassed" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
-        <fa-icon [icon]="faPrint"></fa-icon>
-    </button>
-</h4>
-<div class="col-lg-12 col-md-12 col-sm-12" *ngIf="isDetailsFetched">
-    <div class="row">
-        <div class="col-lg-6 col-md-6 col-sm-6">
-            <label>Registration No </label>
-            <p>{{testDetails.registrationNo}}</p><br/>
-            <label>Name </label>
-            <p>{{testDetails.personName}}</p><br/>
-            <label>Date of Test </label>
-            <p>{{testDetails.dateOfTest}}</p><br/>
-            <label>Instructor </label>
-            <p>{{testDetails.instructorName}}</p><br/>
-            <label>Vehicle Name </label>
-            <p>{{testDetails.vehicleName}}</p>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6">
-            <h3>Sensors Crossed</h3><br>
-            <div style="height: 350px; overflow-y: auto">
-                <p *ngFor="let status of testStatus">
-                    Sensor {{status.sensorId}} Crossed
-                </p>
+<div class="container">
+    <h4 class="heading text-primary">
+        <u>PRACTICAL TEST</u>
+        <button *ngIf="isPassed" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
+            <fa-icon [icon]="faPrint"></fa-icon>
+        </button>
+    </h4>
+    <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="isDetailsFetched">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <label>DL No </label>
+                <p>{{testDetails.dlNo}}</p><br/>
+                <label>Name </label>
+                <p>{{testDetails.candidateName}}</p><br/>
+                <label>Date of Test </label>
+                <p>{{testDetails.dateOfTest}}</p>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <label>Vehicle Number </label>
+                <p>{{testDetails.vehicleNumber}}</p><br/>
+                <label>Instructor </label>
+                <p>{{testDetails.instructorName}}</p><br/>
+                <label>Instructor </label>
+                <p>{{testDetails.vehicleType}} ({{testDetails.vehicleSubType}})</p>
             </div>
         </div>
-    </div>
-    <br><br>
-    <div class="row">
-        <h4>Test Result</h4>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Test Name</th>
-                    <th>Duration</th>
-                    <th>Marks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>8 Track</td>
-                    <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.duration  | millisToMinutesAndSeconds}}</td>
-                    <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.status}}</td>
-                </tr>
-            </tbody>
-        </table>
+        <br><br>
+        <div class="row">
+            <h4>Test Result</h4>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Duration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>8 Track</td>
+                        <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.duration  | millisToMinutesAndSeconds}}</td>
+                        <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

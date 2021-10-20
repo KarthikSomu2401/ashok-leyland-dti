@@ -19,6 +19,8 @@ import { SplitAndTitleCasePipe } from './_utils/split-and-title-case.pipe';
 import { MillisToMinutesAndSecondsPipe } from './_utils/millis-to-minutes-and-seconds.pipe';
 import { TestDetailsFormComponent } from './components/test-details-form/test-details-form.component';
 import { TestAndTrainingPageComponent } from './components/test-and-training-page/test-and-training-page.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { RegisterTestFormComponent } from './components/register-test-form/register-test-form.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { TestAndTrainingPageComponent } from './components/test-and-training-pag
     SplitAndTitleCasePipe,
     MillisToMinutesAndSecondsPipe,
     TestDetailsFormComponent,
-    TestAndTrainingPageComponent
+    TestAndTrainingPageComponent,
+    DashboardComponent,
+    RegisterTestFormComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,22 @@
+<table class="table table-bordered table-striped" style="width: 90%">
+    <thead>
+        <tr>
+            <th>Candidate Name</th>
+            <th>Instructor Name</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let test of testDetails">
+            <td>{{test.candidateName}}</td>
+            <td>{{test.instructorName}}</td>
+            <td>{{test.testType}}</td>
+            <td>{{test.dateOfTest}}</td>
+            <td>
+                <a class="btn btn-primary" href="detailpage/{{test._id}}">Start</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

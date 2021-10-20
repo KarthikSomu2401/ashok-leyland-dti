@@ -25,13 +25,23 @@ export class FormService {
   }
 
   createTestDetailsForm(testDetails: TestDetailsForm): Observable<any> {
-    return this.http.post(AUTH_API + 'createUserTestDetails', {
-      testDetails
-    }, httpOptions);
+    return this.http.post(AUTH_API + 'createUserTestDetails', testDetails, httpOptions);
   }
 
   getTestDetails(testId: string): Observable<any> {
-    return this.http.get(AUTH_API + 'getTestDetails/' + testId , httpOptions);
+    return this.http.get(AUTH_API + 'getTestDetails/' + testId, httpOptions);
+  }
+
+  getAllTestDetails(): Observable<any> {
+    return this.http.get(AUTH_API + 'getAllTestDetails', httpOptions);
+  }
+
+  startTest(testId: string): Observable<any> {
+    return this.http.get(AUTH_API + 'startTest/' + testId, httpOptions);
+  }
+
+  updateTestDetails(testId: string, testDetails: TestDetailsForm): Observable<any> {
+    return this.http.post(AUTH_API + 'updateTestDetails/' + testId, testDetails, httpOptions);
   }
 
 }

@@ -6,15 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  public formName: any;
-  isFormFetched = false;
 
   constructor() { }
 
-  ngOnInit() {
-    this.formName = "user_testing_form";
-    this.isFormFetched = true;
+  ngOnInit(): void {
   }
-
 }
- 

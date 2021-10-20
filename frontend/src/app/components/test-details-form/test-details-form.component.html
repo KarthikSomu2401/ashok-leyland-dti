@@ -15,12 +15,12 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="registrationNo">Registration No</label>
-        <input type="text" class="form-control" id="registrationNo" [(ngModel)]="testDetails.registrationNo" name="registrationNo" aria-describedby="registrationNoHelp" placeholder="Enter Registration No">
+        <label for="dlNo">DL No</label>
+        <input type="text" class="form-control" id="dlNo" [(ngModel)]="testDetails.dlNo" name="dlNo" aria-describedby="dlNoHelp" placeholder="Enter DL No">
     </div>
     <div class="form-group">
-        <label for="personName">Person Name</label>
-        <input type="text" class="form-control" id="personName" [(ngModel)]="testDetails.personName" name="personName" aria-describedby="personNameHelp" placeholder="Enter Person Name">
+        <label for="candidateName">Candidate Name</label>
+        <input type="text" class="form-control" id="candidateName" [(ngModel)]="testDetails.candidateName" name="candidateName" aria-describedby="candidateNameHelp" placeholder="Enter Candidate Name">
     </div>
     <div class="form-group">
         <label for="dateOfTest">Date of Test</label>
@@ -31,8 +31,32 @@
         <input type="text" class="form-control" id="instructorName" [(ngModel)]="testDetails.instructorName" name="instructorName" aria-describedby="instructorNameHelp" placeholder="Enter Instructor Name">
     </div>
     <div class="form-group">
-        <label for="vehicleName">Vehicle Name</label>
-        <input type="text" class="form-control" id="vehicleName" [(ngModel)]="testDetails.vehicleName" name="vehicleName" aria-describedby="vehicleNameHelp" placeholder="Enter Vehicle Name">
+        <div style="width: 50%; display: inline-block">
+            <label for="testType">Vehicle Type</label>
+            <select class="form-select" name="vehicleType" id="vehicleType" style="width: 90%" [(ngModel)] = "testDetails.vehicleType">
+                <option value="LCV" selected>LCV</option>
+                <option value="HCV">HCV</option>
+            </select>
+        </div>
+        <div style="width: 50%; display: inline-block">
+            <label for="testType">Vehicle Sub-Type</label>
+            <select class="form-select" name="vehicleLCVSubType" *ngIf="testDetails.vehicleType === 'LCV'" id="vehicleLCVSubType" [(ngModel)] = "testDetails.vehicleSubType">
+                <option value="Jeep">Jeep</option>
+                <option value="Car">Car</option>
+                <option value="Dhost/partner">Dhost/partner</option>
+            </select>
+            <select class="form-select" name="vehicleHCVSubType" *ngIf="testDetails.vehicleType === 'HCV'" id="vehicleHCVSubType" [(ngModel)] = "testDetails.vehicleSubType">
+                <option value="Bus">Bus</option>
+                <option value="Goods Vehicle">Goods Vehicle</option>
+                <option value="Tracker Trailer">Tracker Trailer</option>
+                <option value="Tipper">Tipper</option>
+                <option value="Multi Axle">Multi Axle</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="vehicleNumber">Vehicle Number</label>
+        <input type="text" class="form-control" id="vehicleNumber" [(ngModel)]="testDetails.vehicleNumber" name="vehicleNumber" aria-describedby="vehicleNumberHelp" placeholder="Enter Vehicle Number">
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>

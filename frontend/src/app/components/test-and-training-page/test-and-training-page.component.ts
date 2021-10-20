@@ -30,13 +30,15 @@ export class TestAndTrainingPageComponent implements OnInit {
     this.getUserDetails();
     interval(1000)
       .pipe(
-        mergeMap(() => this.testStatusService.getTestStatus(this.testDetails.insertedDate))
+        mergeMap(() => this.testStatusService.getTestStatus(this.testDetails.startDate))
       )
       .subscribe((data) => {
         if (data.length > 1 && data[data.length - 1].isLast) {
-          this.testDetails.duration = new Date(data[data.length - 1].insertedDate).getTime() - new Date(data[0].insertedDate).getTime();
+          this.testDetails.duration = new Date(data[data.length - 1].startDate).getTime() - new Date(data[0].startDate).getTime();
           this.testDetails.status = "Passed";
+          this.testDetails.endDate = data[data.length - 1].startDate;
           this.isPassed = true;
+          this.formService.updateTestDetails(this.activatedroute.snapshot.paramMap.get("id")!, this.testDetails);
         } else {
           this.testDetails.duration = 0;
           this.testDetails.status = "In Progress";
@@ -130,16 +132,16 @@ export class TestAndTrainingPageComponent implements OnInit {
             <h4><u>PRACTICAL TEST</u></h4><br/><br/>
             <table style="text-align: left">
               <tr>
-                <td><b>Registration No :</b> ${toBePrinted.registrationNo}</td><td></td>
+                <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
               </tr>
               <tr>
-                <td><b>Name :</b> ${toBePrinted.personName}</td><td></td>
+                <td><b>Name :</b> ${toBePrinted.candidateName}</td><td></td>
               </tr>
               <tr>
                 <td><b>Date of Test :</b> ${toBePrinted.dateOfTest}</td><td></td>
               </tr>
               <tr>
-                <td><b>Instructor :</b> ${toBePrinted.instructorName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleName}</td>
+                <td><b>Instructor :</b> ${toBePrinted.instructorName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td>
               </tr>
             </table>
             <br/><br/>
