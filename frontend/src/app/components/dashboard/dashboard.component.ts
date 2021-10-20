@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
 
   startTest(testId: string): void {
     this.formService.startTest(testId).subscribe((response) => {
-      this.router.navigate(['/detailedPage', response._id]);
+      this.router.navigate(['/detailpage', response._id]);
     });
   }
 
