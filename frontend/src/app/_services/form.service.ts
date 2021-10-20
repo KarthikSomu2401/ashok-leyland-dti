@@ -40,6 +40,10 @@ export class FormService {
     return this.http.get(AUTH_API + 'startTest/' + testId, httpOptions);
   }
 
+  endTest(testId: string): Observable<any> {
+    return this.http.get(AUTH_API + 'endTest/' + testId, httpOptions);
+  }
+
   updateTestDetails(testId: string, testDetails: TestDetailsForm): Observable<any> {
     return this.http.post(AUTH_API + 'updateTestDetails/' + testId, testDetails, httpOptions);
   }

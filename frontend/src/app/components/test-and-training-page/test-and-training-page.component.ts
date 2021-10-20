@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { interval } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { FormService } from 'src/app/_services/form.service';
@@ -23,12 +23,12 @@ export class TestAndTrainingPageComponent implements OnInit {
   isDetailsFetched: Boolean = false;
   isPassed: Boolean = false;
 
-  constructor(private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
+  constructor(private router: Router, private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
   }
 
   ngOnInit(): void {
     this.getUserDetails();
-    interval(1000)
+    /* interval(1000)
       .pipe(
         mergeMap(() => this.testStatusService.getTestStatus(this.testDetails.startDate))
       )
@@ -45,6 +45,15 @@ export class TestAndTrainingPageComponent implements OnInit {
           this.isPassed = false;
         }
         this.testStatus = data;
+      }); */
+    interval(1000)
+      .pipe(
+        mergeMap(() => this.testStatusService.getTestStatus(this.testDetails.startDate))
+      )
+      .subscribe((data) => {
+        this.testDetails.duration = 0;
+        this.testDetails.status = "In Progress";
+        this.isPassed = false;
       });
   }
 
@@ -53,6 +62,22 @@ export class TestAndTrainingPageComponent implements OnInit {
       this.testDetails = response;
       this.isDetailsFetched = true;
     })
+  }
+
+  endTest(testId: string): void {
+    this.formService.endTest(testId).subscribe((response) => {
+      this.testDetails.duration = new Date(response.endDate).getTime() - new Date(response.startDate).getTime();
+      this.testDetails.status = "Passed";
+      this.isPassed = true;
+    })
+  }
+
+  checkPercentage(currentTiming: number) {
+
+  }
+
+  checkDuration(millis: any): void {
+    this.millisToMinutes(millis);
   }
 
   print(toBePrinted: any): void {
@@ -138,7 +163,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                 <td><b>Name :</b> ${toBePrinted.candidateName}</td><td></td>
               </tr>
               <tr>
-                <td><b>Date of Test :</b> ${toBePrinted.dateOfTest}</td><td></td>
+                <td><b>Date of Test :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
               </tr>
               <tr>
                 <td><b>Instructor :</b> ${toBePrinted.instructorName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td>
