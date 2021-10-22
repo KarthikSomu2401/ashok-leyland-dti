@@ -188,6 +188,13 @@ export class TestAndTrainingPageComponent implements OnInit {
             hr {
               border: 1px solid black;
             }
+            .small-text{
+              width: 90%;
+              margin-left: 5%;
+              margin-right: 5%;
+              font-size: .75em;
+              text-align: center;
+            }
           </style>
         </head>
         <body onload="window.print();window.close()">
@@ -197,8 +204,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><p>Society of</p><h3>Ashok Leyland Driver Training Institute</h3><p>(A Joint Venture Between Trasnport Department, Government of Tamil Nadu & Ashok Leyland Ltd)</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
-            <hr><br/>
-            <h4><u>TEST / TRAINING REPORT</u></h4><br/>
+            <hr><br/>`+ (toBePrinted.testType === 'Training' ? `<h4><u>TEST / TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4><br/>` : `<h4><u>TEST / TRAINING REPORT</u></h4><br/>`) + `
             <table style="text-align: left">
               <tr>
                 <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
@@ -208,6 +214,9 @@ export class TestAndTrainingPageComponent implements OnInit {
               </tr>
               <tr>
                 <td><b>Date of Test / Training :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
+              </tr>
+              <tr>
+                <td><b>Start Time :</b> ${this.splitTimeOnly(toBePrinted.startTime)}</td><td><b>End Time :</b> ${this.splitTimeOnly(toBePrinted.endTime)}</td>
               </tr>
               <tr>
                 <td><b>Trainer Name :</b> ${toBePrinted.trainerName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td>
@@ -224,7 +233,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                         <th class="pr-th heading">Test Name</th>
                         <th class="pr-th heading">Sensors Crossed</th>
                         <th class="pr-th heading">Duration</th>
-                        <th class="pr-th heading">Marks</th>
+                        <th class="pr-th heading">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -235,7 +244,8 @@ export class TestAndTrainingPageComponent implements OnInit {
                         <td class="pr-td ${toBePrinted.status.toLowerCase().split(" ").join("_")}">${toBePrinted.status}</td>
                     </tr>
                 </tbody>
-            </table><br/>
+            </table>
+            `+ (toBePrinted.status !== 'Fail' ? `<span class="small-text">(in %):100-86: Slow Learner, 85-71: Average, 70-61: Good, 60-50: Excellent, < 50: Over Speed</span>` : ``) + `<br/><br/>
             <img src="../assets/images/sensor_details.jpg" class="pr-image"></img><br/><br/>
             </div>
         </body>
@@ -252,6 +262,10 @@ export class TestAndTrainingPageComponent implements OnInit {
     } else {
       return 'In Progress';
     }
+  }
+
+  splitTimeOnly(timeString: string) {
+    return timeString.split(", ")[1];
   }
 }
 

@@ -1,6 +1,9 @@
 <div class="container">
     <h4 class="heading text-primary">
-        <u>TEST / TRAINING REPORT</u>
+        <u>TEST / TRAINING REPORT <span *ngIf="isDetailsFetched">
+                <span *ngIf="testDetails.testType === 'Training'">- ATTEMPT {{testDetails.attempt}}</span>
+            </span>
+        </u>
         <button *ngIf="isPrintEnabled" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
             <fa-icon [icon]="faPrint"></fa-icon>
         </button>
