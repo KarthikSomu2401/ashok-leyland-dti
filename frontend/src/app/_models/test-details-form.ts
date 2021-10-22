@@ -8,15 +8,16 @@ export class TestDetailsForm {
     public dateOfTest?: string;
     public trainerName?: string;
     public vehicleNumber?: string;
-    public startDate?: Date;
-    public endDate?: Date;
     public duration?: Number = 0;
     public status?: string;
     public vehicleType?: string;
     public vehicleSubType?: string;
     public attempt?: number;
     public remarks?: string;
-    
+    public startTime?: string;
+    public endTime?: string;
+    public isCompleted?: boolean;
+
     constructor() { }
 
 }

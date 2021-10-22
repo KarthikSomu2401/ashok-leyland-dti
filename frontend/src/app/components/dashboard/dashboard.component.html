@@ -15,8 +15,8 @@
             <td>{{test.testType}}</td>
             <td>{{test.dateOfTest}}</td>
             <td>
-                <button class="btn btn-primary" *ngIf="test.remarks === undefined" (click)="startTest(test._id)">Start</button>
-                <a class="btn btn-primary" *ngIf="test.remarks !== undefined" href="/detailpage/{{test._id}}">View</a>
+                <button class="btn btn-primary" *ngIf="!test.isCompleted" (click)="startTest(test._id)">Start</button>
+                <a class="btn btn-primary" *ngIf="test.isCompleted" href="/detailpage/{{test._id}}">View</a>
             </td>
         </tr>
     </tbody>

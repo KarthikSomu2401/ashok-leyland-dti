@@ -21,50 +21,49 @@ export class TestAndTrainingPageComponent implements OnInit {
   testStatus: TestStatus[] | any;
   isDetailsFetched: Boolean = false;
   sensorsCrossed: string | any;
-  isCompleted: Boolean = false;
   isRemarked: Boolean = false;
 
   constructor(private router: Router, private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
   }
   intervalData: any;
+
+  getTimeFromGMTTime(dateTime: string): any {
+    return new Date(dateTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+  }
+
   ngOnInit(): void {
     this.getUserDetails();
     this.intervalData =
       setInterval(() => {
         this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
-          this.sensorsCrossed = "LS " + response.map((sensor: { sensorId: any; }) => sensor.sensorId).join(",");
+          this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
           if (response.length > 1 && response[response.length - 1].isLast) {
-            this.testDetails.duration = new Date(response[response.length - 1].startDate).getTime() - new Date(response[0].startDate).getTime();
+            this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
+            this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
+            this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
             this.testDetails.status = (response.length - 2) >= this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+            this.testDetails.isCompleted = true;
+            this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
+            this.formService.updateTestDetails(this.testDetails).subscribe(() => {
+              clearInterval(this.intervalData);
+            });
             if (this.testDetails.remarks !== undefined) {
               this.isRemarked = true;
             }
-            this.isCompleted = true;
-            if (this.testDetails.endDate === undefined) {
-              this.formService.endTest(this.testDetails._id).subscribe(() => {
-              })
-            }
-            this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
-            //this.formService.updateTestDetails(this.activatedroute.snapshot.paramMap.get("id")!, this.testDetails);
-            clearInterval(this.intervalData);
           } else {
             this.testDetails.duration = 0;
             if ((response.length - 2) >= this.testDetails.sensorCount) {
               this.testDetails.status = "Fail";
-              this.isCompleted = true;
+              this.testDetails.isCompleted = true;
             } else {
               this.testDetails.status = "In Progress";
-              this.isCompleted = false;
+              this.testDetails.isCompleted = false;
             }
             this.isPrintEnabled = false;
             this.isRemarked = false;
           }
         })
       }, 500);
-  }
-
-  checkSensorCountEligibility(): any {
-
   }
 
   getUserDetails(): void {
@@ -74,17 +73,28 @@ export class TestAndTrainingPageComponent implements OnInit {
     })
   }
 
-  endTest(testId: string): void {
-    this.formService.endTest(testId).subscribe((response) => {
-      clearInterval(this.intervalData);
-      this.testDetails.duration = new Date(response.endDate).getTime() - new Date(response.startDate).getTime();
-      this.testDetails.status = this.sensorsCrossed.split(",").length() > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
-      this.isCompleted = true;
-    })
+  endTest(): void {
+    this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
+      this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
+      this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
+      this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
+      this.testDetails.status = (response.length - 2) >= this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+      this.testDetails.isCompleted = true;
+      this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
+      this.formService.updateTestDetails(this.testDetails).subscribe(() => {
+        clearInterval(this.intervalData);
+      });
+    });
+    /*     this.formService.endTest(testId).subscribe((response) => {
+          clearInterval(this.intervalData);
+          this.testDetails.duration = 0;//new Date(response.endDate).getTime() - new Date(response.startDate).getTime();
+          this.testDetails.status = this.checkPercentage(this.testDetails.duration);
+          this.testDetails.isCompleted = true;
+        }) */
   }
 
   addRemarks(testId: string): void {
-    this.formService.updateTestDetails(testId, this.testDetails).subscribe((response) => {
+    this.formService.updateTestRemarks(testId, this.testDetails).subscribe((response) => {
       this.isPrintEnabled = true;
       this.isRemarked = true;
     });
@@ -187,8 +197,8 @@ export class TestAndTrainingPageComponent implements OnInit {
             <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><p>Society of</p><h3>Ashok Leyland Driver Training Institute</h3><p>(A Joint Venture Between Trasnport Department, Government of Tamil Nadu & Ashok Leyland Ltd)</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
-            <hr><br/><br/>
-            <h4><u>PRACTICAL TEST</u></h4><br/><br/>
+            <hr><br/>
+            <h4><u>TEST / TRAINING REPORT</u></h4><br/>
             <table style="text-align: left">
               <tr>
                 <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
@@ -197,7 +207,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                 <td><b>Candidate Name :</b> ${toBePrinted.candidateName}</td><td></td>
               </tr>
               <tr>
-                <td><b>Date of Test :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
+                <td><b>Date of Test / Training :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
               </tr>
               <tr>
                 <td><b>Trainer Name :</b> ${toBePrinted.trainerName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td>
@@ -207,7 +217,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                 <td colspan="2"><b>Remarks :</b> ${toBePrinted.remarks}</td>
               </tr>
             </table>
-            <br/><br/>
+            <br/>
             <table class="pr-table">
                 <thead>
                     <tr class="pr-tr">
@@ -225,7 +235,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                         <td class="pr-td ${toBePrinted.status.toLowerCase().split(" ").join("_")}">${toBePrinted.status}</td>
                     </tr>
                 </tbody>
-            </table><br/><br/>
+            </table><br/>
             <img src="../assets/images/sensor_details.jpg" class="pr-image"></img><br/><br/>
             </div>
         </body>
@@ -244,3 +254,4 @@ export class TestAndTrainingPageComponent implements OnInit {
     }
   }
 }
+

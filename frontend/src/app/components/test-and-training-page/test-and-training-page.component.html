@@ -1,6 +1,6 @@
 <div class="container">
     <h4 class="heading text-primary">
-        <u>PRACTICAL TEST</u>
+        <u>TEST / TRAINING REPORT</u>
         <button *ngIf="isPrintEnabled" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
             <fa-icon [icon]="faPrint"></fa-icon>
         </button>
@@ -12,7 +12,7 @@
                 <p>{{testDetails.dlNo}}</p><br/>
                 <label>Candidate Name </label>
                 <p>{{testDetails.candidateName}}</p><br/>
-                <label>Date of Test </label>
+                <label>Date of Test / Training </label>
                 <p>{{testDetails.dateOfTest}}</p>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -25,9 +25,9 @@
             </div>
         </div>
         <br>
-        <div class="form-group" *ngIf="isCompleted && !isPrintEnabled && !isRemarked">
+        <div class="form-group" *ngIf="testDetails.isCompleted && !isPrintEnabled && !isRemarked">
             <label> Comments </label>
-            <textarea class="form-control" [(ngModel)]="testDetails.remarks"></textarea>
+            <textarea class="form-control" [(ngModel)]="testDetails.remarks" required></textarea>
             <br/>
             <button class="btn btn-danger" style="float: right; width: 10%" (click)="addRemarks(testDetails._id)">Add Remarks</button>
             <br/>
@@ -41,7 +41,7 @@
         <br>
         <div class="row">
             <div>
-                <button class="btn btn-danger" style="float: right; width: 10%" *ngIf="!isCompleted" (click)="endTest(testDetails._id)">End Test</button>
+                <button class="btn btn-danger" style="float: right; width: 10%" *ngIf="!testDetails.isCompleted" (click)="endTest()">End Test</button>
                 <h4>Test Result</h4>
             </div>
             <br>

@@ -17,7 +17,8 @@ exports.create_test = function(req, res, next) {
                 vehicleNumber: req.body.vehicleNumber,
                 vehicleType: req.body.vehicleType,
                 vehicleSubType: req.body.vehicleSubType,
-                attempt: count + 1
+                attempt: count + 1,
+                createdAt: Date.now()
             });
             testDetailsForm.save().then((response) => {
                 res.status(201).json(response);
@@ -40,7 +41,7 @@ exports.get_test_details = function(req, res, next) {
 };
 
 exports.get_all_test_details = function(req, res, next) {
-    let testDetails = TestDetailsForm.find({}).sort({ startDate: -1 });
+    let testDetails = TestDetailsForm.find({}).sort({ createdAt: -1 });
     testDetails.then((response) => {
         res.status(200).json(response);
     }).catch((error) => {
@@ -53,7 +54,7 @@ exports.start_test = function(req, res, next) {
         _id: req.params['testId']
     };
     var updateValues = {
-        startDate: Date.now()
+        createdAt: Date.now()
     };
     let testDetails = TestDetailsForm.findOneAndUpdate(filter, updateValues);
     testDetails.then((response) => {
@@ -63,12 +64,31 @@ exports.start_test = function(req, res, next) {
     });
 };
 
-exports.end_test = function(req, res, next) {
+/* exports.end_test = function(req, res, next) {
     var filter = {
         _id: req.params['testId']
     };
     var updateValues = {
-        endDate: Date.now()
+        create: Date.now()
+    };
+    let testDetails = TestDetailsForm.findOneAndUpdate(filter, updateValues);
+    testDetails.then((response) => {
+        res.status(200).json(response);
+    }).catch((error) => {
+        return next(error);
+    });
+}; */
+
+
+exports.test_status_update = function(req, res, next) {
+    var filter = {
+        dlNo: req.body.dlNo,
+        attempt: req.body.attempt
+    };
+    var updateValues = {
+        isCompleted: true,
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
     };
     let testDetails = TestDetailsForm.findOneAndUpdate(filter, updateValues);
     testDetails.then((response) => {
@@ -78,8 +98,7 @@ exports.end_test = function(req, res, next) {
     });
 };
 
-
-exports.test_status_update = function(req, res, next) {
+exports.test_status_remarks = function(req, res, next) {
     console.log(req.params['testId'])
     var filter = {
         _id: req.params['testId']
