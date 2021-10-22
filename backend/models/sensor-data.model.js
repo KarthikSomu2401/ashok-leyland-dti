@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 let SensorDataSchema = new Schema({
     sensorId: { type: String, required: true },
     startDate: { type: Date, required: true },
-    isLast: { type: Boolean, required: true }
+    dlNo: { type: String, required: true },
+    attempt: { type: Number, required: true },
+    isLast: { type: Boolean }
 });
 
 // Export the model

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
       data => {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.router.navigate(['home']);
+        this.router.navigate(['dashboard']);
       },
       err => {
         this.errorMessage = err.error.message;

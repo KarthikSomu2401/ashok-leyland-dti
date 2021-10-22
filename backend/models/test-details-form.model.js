@@ -7,12 +7,14 @@ let TestDetailsForm = new Schema({
     dlNo: { type: String, required: true },
     candidateName: { type: String, required: true },
     dateOfTest: { type: String, required: true },
-    instructorName: { type: String, required: true },
+    trainerName: { type: String, required: true },
     vehicleNumber: { type: String, required: true },
     startDate: { type: Date },
     endDate: { type: Date },
     vehicleType: { type: String, required: true },
     vehicleSubType: { type: String, required: true },
+    attempt: { type: Number },
+    remarks: { type: String },
     attempt: { type: Number }
 });
 

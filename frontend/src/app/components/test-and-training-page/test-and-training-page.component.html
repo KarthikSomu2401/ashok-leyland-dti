@@ -1,7 +1,7 @@
 <div class="container">
     <h4 class="heading text-primary">
         <u>PRACTICAL TEST</u>
-        <button *ngIf="isPassed" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
+        <button *ngIf="isPrintEnabled" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
             <fa-icon [icon]="faPrint"></fa-icon>
         </button>
     </h4>
@@ -10,7 +10,7 @@
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <label>DL No </label>
                 <p>{{testDetails.dlNo}}</p><br/>
-                <label>Name </label>
+                <label>Candidate Name </label>
                 <p>{{testDetails.candidateName}}</p><br/>
                 <label>Date of Test </label>
                 <p>{{testDetails.dateOfTest}}</p>
@@ -18,21 +18,39 @@
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <label>Vehicle Number </label>
                 <p>{{testDetails.vehicleNumber}}</p><br/>
-                <label>Instructor </label>
-                <p>{{testDetails.instructorName}}</p><br/>
-                <label>Instructor </label>
+                <label>Trainer Name</label>
+                <p>{{testDetails.trainerName}}</p><br/>
+                <label>Vehicle Type </label>
                 <p>{{testDetails.vehicleType}} ({{testDetails.vehicleSubType}})</p>
             </div>
         </div>
         <br>
-        <button class="btn btn-danger" (click)="endTest(testDetails._id)">End Test</button>
-        <br><br>
+        <div class="form-group" *ngIf="isCompleted && !isPrintEnabled && !isRemarked">
+            <label> Comments </label>
+            <textarea class="form-control" [(ngModel)]="testDetails.remarks"></textarea>
+            <br/>
+            <button class="btn btn-danger" style="float: right; width: 10%" (click)="addRemarks(testDetails._id)">Add Remarks</button>
+            <br/>
+        </div>
+        <br>
+        <div class="form-group" *ngIf="isRemarked">
+            <label> Comments </label>
+            <textarea class="form-control" [(ngModel)]="testDetails.remarks" disabled></textarea>
+            <br/>
+        </div>
+        <br>
         <div class="row">
-            <h4>Test Result</h4>
+            <div>
+                <button class="btn btn-danger" style="float: right; width: 10%" *ngIf="!isCompleted" (click)="endTest(testDetails._id)">End Test</button>
+                <h4>Test Result</h4>
+            </div>
+            <br>
+            <br>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Test Name</th>
+                        <th>Sensors Crossed</th>
                         <th>Duration</th>
                         <th>Status</th>
                     </tr>
@@ -40,11 +58,13 @@
                 <tbody>
                     <tr>
                         <td>8 Track</td>
-                        <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.duration  | millisToMinutesAndSeconds}}</td>
-                        <td [ngClass]="isPassed ? 'user-passed' : 'user-progress'">{{testDetails.status}}</td>
+                        <td>{{sensorsCrossed}}</td>
+                        <td>{{testDetails.duration  | millisToMinutesAndSeconds}}</td>
+                        <td>{{testDetails.status}}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<!-- [ngClass]="isCompleted ? 'user-passed' : 'user-progress'"-->

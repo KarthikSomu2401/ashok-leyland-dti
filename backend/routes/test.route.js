@@ -6,5 +6,6 @@ let test_controller = require("../controllers/test.controller");
 
 router.route("/sensorCrossed").get(test_controller.test_sensor_data);
 router.route("/testStatus").post(test_controller.test_status);
+router.route("/testCompletedStatus").post(test_controller.test_completed_status);
 
 module.exports = router;

@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Candidate Name</th>
-            <th>Instructor Name</th>
+            <th>Trainer Name</th>
             <th>Type</th>
             <th>Date</th>
             <th></th>
@@ -11,11 +11,12 @@
     <tbody>
         <tr *ngFor="let test of testDetails">
             <td>{{test.candidateName}}</td>
-            <td>{{test.instructorName}}</td>
+            <td>{{test.trainerName}}</td>
             <td>{{test.testType}}</td>
             <td>{{test.dateOfTest}}</td>
             <td>
-                <button class="btn btn-primary" (click)="startTest(test._id)">Start</button>
+                <button class="btn btn-primary" *ngIf="test.remarks === undefined" (click)="startTest(test._id)">Start</button>
+                <a class="btn btn-primary" *ngIf="test.remarks !== undefined" href="/detailpage/{{test._id}}">View</a>
             </td>
         </tr>
     </tbody>

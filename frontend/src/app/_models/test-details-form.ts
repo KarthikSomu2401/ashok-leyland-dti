@@ -6,7 +6,7 @@ export class TestDetailsForm {
     public dlNo?: string;
     public candidateName?: string;
     public dateOfTest?: string;
-    public instructorName?: string;
+    public trainerName?: string;
     public vehicleNumber?: string;
     public startDate?: Date;
     public endDate?: Date;
@@ -15,7 +15,8 @@ export class TestDetailsForm {
     public vehicleType?: string;
     public vehicleSubType?: string;
     public attempt?: number;
-
+    public remarks?: string;
+    
     constructor() { }
 
 }
