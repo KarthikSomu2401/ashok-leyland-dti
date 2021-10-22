@@ -16,9 +16,10 @@ export class TestStatusService {
 
   constructor(private http: HttpClient) { }
 
-  getTestStatus(testStatusDate: Date): Observable<any> {
+  getTestStatus(dlNumber: String, attempt: Number): Observable<any> {
     return this.http.post(AUTH_API + 'testStatus', {
-      date: testStatusDate
+      dlNo: dlNumber,
+      attempt: attempt
     }, httpOptions);
   }
 

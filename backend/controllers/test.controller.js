@@ -15,10 +15,9 @@ exports.test_sensor_data = function(req, res, next) {
 
 exports.test_status = function(req, res, next) {
     SensorData.find({
-        startDate: {
-            $gte: req.body.date
-        }
-    }).limit(16).exec(function(err, docs) {
+        dlNo: req.body.dlNo,
+        attempt: req.body.attempt
+    }).exec(function(err, docs) {
         if (err) {
             console.log(err);
         } else {

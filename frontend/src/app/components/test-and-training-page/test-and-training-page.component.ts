@@ -31,7 +31,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     this.getUserDetails();
     this.intervalData =
       setInterval(() => {
-        this.testStatusService.getTestStatus(this.testDetails.startDate).subscribe((response) => {
+        this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
           this.sensorsCrossed = "LS " + response.map((sensor: { sensorId: any; }) => sensor.sensorId).join(",");
           if (response.length > 1 && response[response.length - 1].isLast) {
             this.testDetails.duration = new Date(response[response.length - 1].startDate).getTime() - new Date(response[0].startDate).getTime();
