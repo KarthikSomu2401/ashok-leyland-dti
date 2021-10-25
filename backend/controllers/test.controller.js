@@ -3,13 +3,17 @@ const TestDetailsForm = require("../models/test-details-form.model");
 
 exports.test_sensor_data = function(req, res, next) {
     TestDetailsForm.findOne({ isCompleted: false }).sort({ 'createdAt': -1 }).exec(function(err, post) {
-        let sensorData;
-        sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: Date.now() });
-        sensorData.save().then((response) => {
-            res.status(201).json(response);
-        }).catch((error) => {
-            return next(error);
-        });
+        if (post != null) {
+            let sensorData;
+            sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: Date.now() });
+            sensorData.save().then((response) => {
+                res.status(201).json(response);
+            }).catch((error) => {
+                return next(error);
+            });
+        } else {
+            res.status(500).json({ "message": "No active test!" });
+        }
     });
 };
 

@@ -64,22 +64,6 @@ exports.start_test = function(req, res, next) {
     });
 };
 
-/* exports.end_test = function(req, res, next) {
-    var filter = {
-        _id: req.params['testId']
-    };
-    var updateValues = {
-        create: Date.now()
-    };
-    let testDetails = TestDetailsForm.findOneAndUpdate(filter, updateValues);
-    testDetails.then((response) => {
-        res.status(200).json(response);
-    }).catch((error) => {
-        return next(error);
-    });
-}; */
-
-
 exports.test_status_update = function(req, res, next) {
     var filter = {
         dlNo: req.body.dlNo,
