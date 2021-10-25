@@ -20,16 +20,30 @@ export class TestDetailsFormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSubmit(): void {
-    this.formService.createTestDetailsForm(this.testDetails).subscribe(
-      response => {
-        /* this.router.navigateByUrl('/detailpage', {
-          state: response
-        }); */ 
-        this.router.navigate(['/dashboard']);
-      }, error => {
-        console.log(error);
-      }
-    )
+  onSubmit(e: Event): void {
+    if (this.validate(e)) {
+      this.formService.createTestDetailsForm(this.testDetails).subscribe(
+        response => {
+          /* this.router.navigateByUrl('/detailpage', {
+            state: response
+          }); */
+          this.router.navigate(['/dashboard']);
+        }, error => {
+          console.log(error);
+        }
+      );
+    }
+  }
+
+  validate(event: Event): Boolean {
+    var form = document.getElementsByClassName('needs-validation')[0] as HTMLFormElement;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      console.log(form);
+      return false;
+    }
+    form.classList.add('was-validated');
+    return true;
   }
 }

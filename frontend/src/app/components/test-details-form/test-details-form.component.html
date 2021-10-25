@@ -1,34 +1,46 @@
-<form class="form-spacing" #testDetailsForm="ngForm" (ngSubmit)="onSubmit()" >
+<form class="form-spacing needs-validation" #testDetailsForm="ngForm" (ngSubmit)="onSubmit($event)" >
     <h3 class="heading-2">{{formName | splitAndTitleCase}}</h3>
     <div class="form-group">
         <div style="width: 50%; display: inline-block">
             <label for="testType">Type</label>
-            <select class="form-select" [(ngModel)]="testDetails.testType" name="testType" style="width: 90%" id="testType" aria-label="Default select example">
+            <select class="form-select" [(ngModel)]="testDetails.testType" name="testType" style="width: 90%" id="testType" aria-label="Default select example" required>
                 <option selected>Select a Type</option>
                 <option value="Training">Training</option>
                 <option value="Test">Test</option>
             </select>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
         </div>
         <div style="width: 50%; display: inline-block">
             <label for="sensorCount">Sensor Count</label>
             <input type="number" class="form-control" id="sensorCount" [(ngModel)]="testDetails.sensorCount" name="sensorCount" aria-describedby="sensorCountHelp" placeholder="Enter Sensor Count">
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
         </div>
     </div>
     <div class="form-group">
         <label for="dlNo">DL No</label>
         <input type="text" class="form-control" id="dlNo" [(ngModel)]="testDetails.dlNo" name="dlNo" aria-describedby="dlNoHelp" placeholder="Enter DL No">
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
     </div>
     <div class="form-group">
         <label for="candidateName">Candidate Name</label>
         <input type="text" class="form-control" id="candidateName" [(ngModel)]="testDetails.candidateName" name="candidateName" aria-describedby="candidateNameHelp" placeholder="Enter Candidate Name">
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
     </div>
     <div class="form-group">
         <label for="dateOfTest">Date of Test / Training</label>
         <input type="date" class="form-control" id="dateOfTest" [(ngModel)]="testDetails.dateOfTest" name="dateOfTest" aria-describedby="dateOfTestHelp">
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
     </div>
     <div class="form-group">
         <label for="trainerName">Trainer Name</label>
         <input type="text" class="form-control" id="trainerName" [(ngModel)]="testDetails.trainerName" name="trainerName" aria-describedby="trainerNameHelp" placeholder="Enter Trainer Name">
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
     </div>
     <div class="form-group">
         <div style="width: 50%; display: inline-block">
@@ -37,6 +49,8 @@
                 <option value="LCV" selected>LCV</option>
                 <option value="HCV">HCV</option>
             </select>
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Please fill out this field.</div>
         </div>
         <div style="width: 50%; display: inline-block">
             <label for="testType">Vehicle Sub-Type</label>
@@ -57,6 +71,8 @@
     <div class="form-group">
         <label for="vehicleNumber">Vehicle Number</label>
         <input type="text" class="form-control" id="vehicleNumber" [(ngModel)]="testDetails.vehicleNumber" name="vehicleNumber" aria-describedby="vehicleNumberHelp" placeholder="Enter Vehicle Number">
+        <div class="valid-feedback">Valid.</div>
+        <div class="invalid-feedback">Please fill out this field.</div>
     </div>
     <br>
     <button type="submit" class="btn btn-primary">Submit</button>
