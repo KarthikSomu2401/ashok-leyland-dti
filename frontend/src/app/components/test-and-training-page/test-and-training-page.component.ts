@@ -249,7 +249,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     </tbody>
     </table>
       `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (in %): 100 - 86: Grade A, 85 - 71: Grade B, 70 - 61: Grade C, 60 - 50: Grade D, <50: Grade E </span>` : ``) + `<br/> <br/>
-      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img><img src = "../assets/images/sensor_details.jpg" class= "pr-image"></image> <br/> <br/>
+      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(this.sensorsCrossed.length - 1)}.jpg" class= "pr-image"></image>` : ``)+` <br/> <br/>
     </div>
     </body>
     </html>`
