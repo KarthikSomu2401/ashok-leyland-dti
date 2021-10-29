@@ -23,7 +23,7 @@ export class TestAndTrainingPageComponent implements OnInit {
   sensorsCrossed: string | any;
   isRemarked: Boolean = false;
 
-  constructor(private router: Router, private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
+  constructor(private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
   }
   intervalData: any;
 
@@ -104,15 +104,15 @@ export class TestAndTrainingPageComponent implements OnInit {
     let percentage = (currentTiming / 330000) * 100;
     let response = "Fail";
     if (percentage > 85 && percentage <= 100)
-      response = "Slow Learner";
+      response = "Grade A";
     else if (percentage > 70 && percentage <= 85)
-      response = "Average";
+      response = "Grade B";
     else if (percentage > 60 && percentage <= 70)
-      response = "Good";
+      response = "Grade C";
     else if (percentage >= 50 && percentage <= 60)
-      response = "Excellent";
+      response = "Grade D";
     else if (percentage < 50)
-      response = "Over Speed";
+      response = "Grade E";
     return response;
   }
 
@@ -125,6 +125,9 @@ export class TestAndTrainingPageComponent implements OnInit {
         <head>
           <title>Print tab</title>
           <style>
+            body{
+              text-transform: uppercase;
+            }
             table {
               width: 90%;
               margin-left: 5%;
@@ -151,19 +154,19 @@ export class TestAndTrainingPageComponent implements OnInit {
             .heading {
               background-color: #b9bdba;
             }
-            .excellent, .good {
+            .grade_b, .grade_a, .success {
               color: green!important;
             }
-            .fail, .over_speed {
+            .fail, .grade_e {
               color: red!important;
             }
-            .average, .slow_learner {
+            .grade_d, .grade_c {
               color: orange!important;
             }
             .pr-image {
               margin-left: 5%;
               margin-right: 5%; 
-              width: 90%;
+              width: 39%;
             }
             h4 {
               padding-left: 5%;
@@ -201,10 +204,10 @@ export class TestAndTrainingPageComponent implements OnInit {
             <div class="body-content">
             <div style="width: 97.5%">
             <img src="../assets/images/logo.png" class="pr-header-logo"></img>
-            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><p>Society of</p><h3>Ashok Leyland Driver Training Institute</h3><p>(A Joint Venture Between Trasnport Department, Government of Tamil Nadu & Ashok Leyland Ltd)</p></span>
+            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute</h3><p>Vallipuram, Namakkal, Tamil Nadu - 637003.</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
-            <hr><br/>`+ (toBePrinted.testType === 'Training' ? `<h4><u>TEST / TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4><br/>` : `<h4><u>TEST / TRAINING REPORT</u></h4><br/>`) + `
+            <hr><br/>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center><br/>` : `<center><h4><u>TEST REPORT</u></h4></center><br/>`) + `
             <table style="text-align: left">
               <tr>
                 <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
@@ -213,7 +216,7 @@ export class TestAndTrainingPageComponent implements OnInit {
                 <td><b>Candidate Name :</b> ${toBePrinted.candidateName}</td><td></td>
               </tr>
               <tr>
-                <td><b>Date of Test / Training :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
+                <td><b>Date of ${toBePrinted.testType} :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
               </tr>
               <tr>
                 <td><b>Start Time :</b> ${this.splitTimeOnly(toBePrinted.startTime)}</td><td><b>End Time :</b> ${this.splitTimeOnly(toBePrinted.endTime)}</td>
@@ -241,15 +244,15 @@ export class TestAndTrainingPageComponent implements OnInit {
                         <td class="pr-td">8 Track</td>
                         <td class="pr-td">${this.sensorsCrossed}</td>
                         <td class="pr-td">${this.millisToMinutes(toBePrinted.duration)}</td>
-                        <td class="pr-td ${toBePrinted.status.toLowerCase().split(" ").join("_")}">${toBePrinted.status}</td>
-                    </tr>
-                </tbody>
-            </table>
-            `+ (toBePrinted.status !== 'Fail' ? `<span class="small-text">(in %):100-86: Slow Learner, 85-71: Average, 70-61: Good, 60-50: Excellent, < 50: Over Speed</span>` : ``) + `<br/><br/>
-            <img src="../assets/images/sensor_details.jpg" class="pr-image"></img><br/><br/>
-            </div>
-        </body>
-      </html>`
+                        <td class="pr-td">`+ (toBePrinted.status === 'Fail' ? `` : `<span class="success"> Pass </span>`) + `<span class="${toBePrinted.status.toLowerCase().split(" ").join("_")}" > (${toBePrinted.status}) </span></td>
+    </tr>
+    </tbody>
+    </table>
+      `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (in %): 100 - 86: Grade A, 85 - 71: Grade B, 70 - 61: Grade C, 60 - 50: Grade D, <50: Grade E </span>` : ``) + `<br/> <br/>
+      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img><img src = "../assets/images/sensor_details.jpg" class= "pr-image"></image> <br/> <br/>
+    </div>
+    </body>
+    </html>`
     );
     popupWin?.document.close();
   }

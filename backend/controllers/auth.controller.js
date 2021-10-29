@@ -4,15 +4,23 @@ const envs = require("../configurations");
 const Authentication = require("../models/auth.model");
 
 exports.create_user = function(req, res, next) {
-    let authentication = new Authentication({ username: req.body.username, password: req.body.password });
-    authentication
-        .save()
-        .then((response) => {
-            res.status(201).send("User Created successfully");
-        })
-        .catch((error) => {
-            return next(error);
-        });
+    let authCheck = Authentication.findOne({
+        username: req.body.username
+    }).then(function(user) {
+        if (user) {
+            res.status(409).send({ message: "User already exists!" });
+        } else {
+            let authentication = new Authentication({ username: req.body.username, password: req.body.password });
+            authentication
+                .save()
+                .then((response) => {
+                    res.status(201).send(response);
+                })
+                .catch((error) => {
+                    return next(error);
+                });
+        }
+    })
 };
 
 exports.login_user = function(req, res, next) {
