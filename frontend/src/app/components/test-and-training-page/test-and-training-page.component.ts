@@ -104,13 +104,13 @@ export class TestAndTrainingPageComponent implements OnInit {
     let percentage = (currentTiming / 330000) * 100;
     let response = "Fail";
     if (percentage > 85 && percentage <= 100)
-      response = "Grade A";
-    else if (percentage > 70 && percentage <= 85)
-      response = "Grade B";
-    else if (percentage > 60 && percentage <= 70)
-      response = "Grade C";
-    else if (percentage >= 50 && percentage <= 60)
       response = "Grade D";
+    else if (percentage > 70 && percentage <= 85)
+      response = "Grade C";
+    else if (percentage > 60 && percentage <= 70)
+      response = "Grade B";
+    else if (percentage >= 50 && percentage <= 60)
+      response = "Grade A";
     else if (percentage < 50)
       response = "Grade E";
     return response;
@@ -123,7 +123,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     popupWin?.document.write(`
       <html>
         <head>
-          <title>Print tab</title>
+          <title>${toBePrinted.dlNo}_${toBePrinted.testType}_${new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()}</title>
           <style>
             body{
               text-transform: uppercase;
@@ -154,19 +154,20 @@ export class TestAndTrainingPageComponent implements OnInit {
             .heading {
               background-color: #b9bdba;
             }
-            .grade_b, .grade_a, .success {
+            .grade_c, .grade_d, .success {
               color: green!important;
             }
             .fail, .grade_e {
               color: red!important;
             }
-            .grade_d, .grade_c {
+            .grade_a, .grade_b {
               color: orange!important;
             }
             .pr-image {
               margin-left: 5%;
               margin-right: 5%; 
               width: 39%;
+              height: 500px;
             }
             h4 {
               padding-left: 5%;
@@ -195,7 +196,8 @@ export class TestAndTrainingPageComponent implements OnInit {
               width: 90%;
               margin-left: 5%;
               margin-right: 5%;
-              font-size: .75em;
+              font-size: .65em;
+              padding-top: 2%;
               text-align: center;
             }
           </style>
@@ -207,7 +209,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute</h3><p>Vallipuram, Namakkal, Tamil Nadu - 637003.</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
-            <hr><br/>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center><br/>` : `<center><h4><u>TEST REPORT</u></h4></center><br/>`) + `
+            <hr>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center>` : `<center><h4><u>TEST REPORT</u></h4></center>`) + `<br/>
             <table style="text-align: left">
               <tr>
                 <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
@@ -228,8 +230,7 @@ export class TestAndTrainingPageComponent implements OnInit {
               <tr>
                 <td colspan="2"><b>Remarks :</b> ${toBePrinted.remarks}</td>
               </tr>
-            </table>
-            <br/>
+            </table><br/>
             <table class="pr-table">
                 <thead>
                     <tr class="pr-tr">
@@ -244,17 +245,21 @@ export class TestAndTrainingPageComponent implements OnInit {
                         <td class="pr-td">8 Track</td>
                         <td class="pr-td">${this.sensorsCrossed}</td>
                         <td class="pr-td">${this.millisToMinutes(toBePrinted.duration)}</td>
-                        <td class="pr-td">`+ (toBePrinted.status === 'Fail' ? `` : `<span class="success"> Pass </span>`) + `<span class="${toBePrinted.status.toLowerCase().split(" ").join("_")}" > (${toBePrinted.status}) </span></td>
+                        <td class="pr-td">`+ (toBePrinted.status === 'Fail' ? `<span class="${toBePrinted.status.toLowerCase().split(" ").join("_")}" ><b> ${toBePrinted.status} </b></span>` : `<span class="success"> <b> Pass </b> <span class="${toBePrinted.status.toLowerCase().split(" ").join("_")}" > (${toBePrinted.status}) </span></span>`) + `</td>
     </tr>
     </tbody>
     </table>
-      `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (in %): 100 - 86: Grade A, 85 - 71: Grade B, 70 - 61: Grade C, 60 - 50: Grade D, <50: Grade E </span>` : ``) + `<br/> <br/>
-      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(this.sensorsCrossed.length - 1)}.jpg" class= "pr-image"></image>` : ``)+` <br/> <br/>
+      `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 86: Grade D, 85 - 71: Grade C, 70 - 61: Grade B, 60 - 50: Grade A, <50: Grade E </span>` : ``) + `<br/><br/>
+      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(this.sensorsCrossed.length - 1)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`)+` <br/><br/>
     </div>
     </body>
     </html>`
     );
     popupWin?.document.close();
+  }
+
+  hasNumber(myString: string) {
+    return /\d/.test(myString);
   }
 
   millisToMinutes(millis: any) {
