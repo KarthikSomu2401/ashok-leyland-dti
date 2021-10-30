@@ -5,6 +5,7 @@ import { TestDetailsForm } from 'src/app/_models/test-details-form';
 import { TestStatusService } from 'src/app/_services/test-status.service';
 import { TestStatus } from 'src/app/_models/test-status';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
+import { countUpTimerConfigModel, timerTexts, CountupTimerService } from 'ngx-timer';
 
 
 @Component({
@@ -22,8 +23,9 @@ export class TestAndTrainingPageComponent implements OnInit {
   isDetailsFetched: Boolean = false;
   sensorsCrossed: string | any;
   isRemarked: Boolean = false;
+  testConfig: any;
 
-  constructor(private activatedroute: ActivatedRoute, private formService: FormService, private testStatusService: TestStatusService) {
+  constructor(private activatedroute: ActivatedRoute, private countupTimerService: CountupTimerService, private formService: FormService, private testStatusService: TestStatusService) {
   }
   intervalData: any;
 
@@ -31,17 +33,32 @@ export class TestAndTrainingPageComponent implements OnInit {
     return new Date(dateTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
   }
 
+  initiateTimerForTest(): void{
+        //countUpTimerConfigModel
+        this.testConfig = new countUpTimerConfigModel();
+    
+        //custom class
+        this.testConfig.timerClass  = 'test_Timer_class';
+     
+        //timer text values  
+        this.testConfig.timerTexts = new timerTexts();
+        this.testConfig.timerTexts.hourText = "Hours"; //default - hh
+        this.testConfig.timerTexts.minuteText = "Minutes"; //default - mm
+        this.testConfig.timerTexts.secondsText = "Seconds"; //default - ss
+  }
+
   ngOnInit(): void {
+    this.initiateTimerForTest();
     this.getUserDetails();
     this.intervalData =
       setInterval(() => {
         this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
           this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
-          if (response.length > 1 && response[response.length - 1].isLast) {
+          if (response.length > 1 && response[response.length - 1].isLast && !this.testDetails.isCompleted) {
             this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
             this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
             this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
-            this.testDetails.status = (response.length - 2) >= this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+            this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
             this.testDetails.isCompleted = true;
             this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
             this.formService.updateTestDetails(this.testDetails).subscribe(() => {
@@ -52,9 +69,14 @@ export class TestAndTrainingPageComponent implements OnInit {
             }
           } else {
             this.testDetails.duration = 0;
-            if ((response.length - 2) >= this.testDetails.sensorCount) {
+            if(response.length == 1){
+              this.countupTimerService.startTimer();
+            }
+            if ((response.length - 2) > this.testDetails.sensorCount) {
               this.testDetails.status = "Fail";
               this.testDetails.isCompleted = true;
+              this.countupTimerService.stopTimer();
+              this.endTest();
             } else {
               this.testDetails.status = "In Progress";
               this.testDetails.isCompleted = false;
@@ -78,7 +100,7 @@ export class TestAndTrainingPageComponent implements OnInit {
       this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
       this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
       this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
-      this.testDetails.status = (response.length - 2) >= this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+      this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
       this.testDetails.isCompleted = true;
       this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
       this.formService.updateTestDetails(this.testDetails).subscribe(() => {
