@@ -21,6 +21,7 @@ import { TestDetailsFormComponent } from './components/test-details-form/test-de
 import { TestAndTrainingPageComponent } from './components/test-and-training-page/test-and-training-page.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterTestFormComponent } from './components/register-test-form/register-test-form.component';
+import { NgxTimerModule } from 'ngx-timer';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RegisterTestFormComponent } from './components/register-test-form/regis
     MatIconModule,
     MatSliderModule,
     MatToolbarModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxTimerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

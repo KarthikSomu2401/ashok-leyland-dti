@@ -1,6 +1,6 @@
 h4.heading {
     padding-top: 3%;
-    padding-bottom: 3%;
+    padding-bottom: 1.5%;
 }
 
 label {
@@ -21,4 +21,13 @@ label {
     -o-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
+}
+
+.timer-design{
+    padding: 1%;
+    background-color: beige;
+    border-radius: 10px;
+    color: red;
+    text-align: center;
+    margin-bottom: 1%;
 }
