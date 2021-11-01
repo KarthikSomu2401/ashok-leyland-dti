@@ -85,12 +85,6 @@ export class TestAndTrainingPageComponent implements OnInit {
         clearInterval(this.intervalData);
       });
     });
-    /*     this.formService.endTest(testId).subscribe((response) => {
-          clearInterval(this.intervalData);
-          this.testDetails.duration = 0;//new Date(response.endDate).getTime() - new Date(response.startDate).getTime();
-          this.testDetails.status = this.checkPercentage(this.testDetails.duration);
-          this.testDetails.isCompleted = true;
-        }) */
   }
 
   addRemarks(testId: string): void {
