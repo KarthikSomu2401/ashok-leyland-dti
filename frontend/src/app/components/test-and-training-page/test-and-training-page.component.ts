@@ -266,7 +266,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     </tbody>
     </table>
       `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 86: Grade D, 85 - 71: Grade C, 70 - 61: Grade B, 60 - 50: Grade A, <50: Grade E </span>` : ``) + `<br/><br/>
-      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(this.sensorsCrossed.length - 1)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`)+` <br/><br/>
+      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`)+` <br/><br/>
     </div>
     </body>
     </html>`
