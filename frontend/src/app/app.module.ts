@@ -22,6 +22,7 @@ import { TestAndTrainingPageComponent } from './components/test-and-training-pag
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterTestFormComponent } from './components/register-test-form/register-test-form.component';
 import { NgxTimerModule } from 'ngx-timer';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NgxTimerModule } from 'ngx-timer';
     TestDetailsFormComponent,
     TestAndTrainingPageComponent,
     DashboardComponent,
-    RegisterTestFormComponent
+    RegisterTestFormComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

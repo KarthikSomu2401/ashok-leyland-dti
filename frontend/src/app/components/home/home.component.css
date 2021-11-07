@@ -1,0 +1,13 @@
+.side-sticky {
+    position: fixed;
+    left: 0;
+    top: auto;
+    height: max-content;
+    width: fit-content;
+}
+
+.side-content {
+    margin-left: 15%;
+    margin-bottom: 8%;
+    overflow-y: scroll;
+}
