@@ -1,6 +1,12 @@
 /* Footer */
 
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+:root {
+    --primary-color: #faa064;
+    --success-color: green;
+    --primary-color-hover: #fa7e2b;
+}
+
 section {
     position: fixed;
     margin-bottom: 0px;
@@ -10,13 +16,13 @@ section {
 
 section .section-title {
     text-align: center;
-    color: #007b5e;
+    color: var(--primary-color);
     margin-bottom: 50px;
     text-transform: uppercase;
 }
 
 #footer {
-    background: #007b5e !important;
+    background: var(--primary-color) !important;
 }
 
 #footer h5 {
