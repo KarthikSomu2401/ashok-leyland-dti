@@ -223,6 +223,9 @@ export class TestAndTrainingPageComponent implements OnInit {
               padding-top: 2%;
               text-align: center;
             }
+            .body-note {
+              padding-left: 5%;
+            }
             @media print {
               .pagebreak {
                   clear: both;
@@ -280,10 +283,24 @@ export class TestAndTrainingPageComponent implements OnInit {
     </table>
       `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 81: Grade E, 80 - 61: Grade D, 60 - 41: Grade C, 40 - 31: Grade B, <30: Grade A </span>` : ``) + `<br/><br/>
       <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+ (this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`) + ` <br/>
-      <div style="height: 50px"></div>
+      <div style="height: 58px"></div>
       <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
       </div>
-    `+ (toBePrinted.status === 'Fail' ? `<div class="pagebreak"> </div><div class="body-content"><span>Regards</span></div>` : ``) + `
+    `+ (toBePrinted.status === 'Fail' ? `<div class="pagebreak"></div>
+    <div class="body-content">
+    <div class="body-note">
+    <h3 style="text-decoration: underline">NOTE:</h3>
+    <ol>
+    <li>A Candidate is considered as Fail only if: 
+      <ol>
+        <li>If he/she exceeds the given time limit for each category of vehicle.</li>
+        <li>If he/she crosses the loop sensors as specified by the training authorities.</li>
+      </ol>
+    </li>
+    <li>Grade is assigned based on the effective time duration of his/her driving in the test track.</li>
+    </ol>
+    </div><div style="height: 80%"></div>
+    </div>` : ``) + `
     </body>
     </html>`
     );
