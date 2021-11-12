@@ -23,11 +23,16 @@ label {
     transform: rotate(90deg);
 }
 
-.timer-design{
+.timer-design {
     padding: 1%;
     background-color: beige;
     border-radius: 10px;
     color: red;
     text-align: center;
     margin-bottom: 1%;
+}
+
+.report-container {
+    margin-bottom: 8%;
+    overflow-y: scroll;
 }

@@ -88,3 +88,8 @@ section .section-title {
         margin-bottom: 10px;
     }
 }
+
+.footer-logo {
+    width: 80px;
+    height: 80px;
+}

@@ -33,18 +33,18 @@ export class TestAndTrainingPageComponent implements OnInit {
     return new Date(dateTime).toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
   }
 
-  initiateTimerForTest(): void{
-        //countUpTimerConfigModel
-        this.testConfig = new countUpTimerConfigModel();
-    
-        //custom class
-        this.testConfig.timerClass  = 'test_Timer_class';
-     
-        //timer text values  
-        this.testConfig.timerTexts = new timerTexts();
-        this.testConfig.timerTexts.hourText = "Hours"; //default - hh
-        this.testConfig.timerTexts.minuteText = "Minutes"; //default - mm
-        this.testConfig.timerTexts.secondsText = "Seconds"; //default - ss
+  initiateTimerForTest(): void {
+    //countUpTimerConfigModel
+    this.testConfig = new countUpTimerConfigModel();
+
+    //custom class
+    this.testConfig.timerClass = 'test_Timer_class';
+
+    //timer text values  
+    this.testConfig.timerTexts = new timerTexts();
+    this.testConfig.timerTexts.hourText = "Hours"; //default - hh
+    this.testConfig.timerTexts.minuteText = "Minutes"; //default - mm
+    this.testConfig.timerTexts.secondsText = "Seconds"; //default - ss
   }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
             this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
             this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
-            this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+            this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
             this.testDetails.isCompleted = true;
             this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
             this.formService.updateTestDetails(this.testDetails).subscribe(() => {
@@ -69,7 +69,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             }
           } else {
             this.testDetails.duration = 0;
-            if(response.length == 1){
+            if (response.length == 1) {
               this.countupTimerService.startTimer();
             }
             if ((response.length - 2) > this.testDetails.sensorCount) {
@@ -92,6 +92,13 @@ export class TestAndTrainingPageComponent implements OnInit {
     this.formService.getTestDetails(this.activatedroute.snapshot.paramMap.get("id")!).subscribe((response) => {
       this.testDetails = response;
       this.isDetailsFetched = true;
+      if (this.testDetails.vehicleType === "LCV") {
+        this.testDetails.overall = 240000;
+      } else if (this.testDetails.vehicleType === "HCV" && this.testDetails.vehicleSubType === "Tracker Trailer") {
+        this.testDetails.overall = 480000;
+      } else {
+        this.testDetails.overall = 330000;
+      }
     })
   }
 
@@ -100,7 +107,7 @@ export class TestAndTrainingPageComponent implements OnInit {
       this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
       this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
       this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
-      this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration);
+      this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
       this.testDetails.isCompleted = true;
       this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
       this.formService.updateTestDetails(this.testDetails).subscribe(() => {
@@ -116,19 +123,19 @@ export class TestAndTrainingPageComponent implements OnInit {
     });
   }
 
-  checkPercentage(currentTiming: number): string {
-    let percentage = (currentTiming / 330000) * 100;
+  checkPercentage(currentTiming: number, overallTiming: number): string {
+    let percentage = (currentTiming / overallTiming) * 100;
     let response = "Fail";
-    if (percentage > 85 && percentage <= 100)
-      response = "Grade D";
-    else if (percentage > 70 && percentage <= 85)
-      response = "Grade C";
-    else if (percentage > 60 && percentage <= 70)
-      response = "Grade B";
-    else if (percentage >= 50 && percentage <= 60)
-      response = "Grade A";
-    else if (percentage < 50)
+    if (percentage > 80 && percentage <= 100)
       response = "Grade E";
+    else if (percentage > 60 && percentage <= 80)
+      response = "Grade D";
+    else if (percentage > 40 && percentage <= 60)
+      response = "Grade C";
+    else if (percentage > 30 && percentage <= 40)
+      response = "Grade B";
+    else if (percentage < 30)
+      response = "Grade A";
     return response;
   }
 
@@ -139,7 +146,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     popupWin?.document.write(`
       <html>
         <head>
-          <title>${toBePrinted.dlNo}_${toBePrinted.testType}_${new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()}</title>
+          <title>${toBePrinted.dlNo}_${toBePrinted.testType}_${new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()}</title>
           <style>
             body{
               text-transform: uppercase;
@@ -170,20 +177,20 @@ export class TestAndTrainingPageComponent implements OnInit {
             .heading {
               background-color: #b9bdba;
             }
-            .grade_c, .grade_d, .success {
+            .grade_e, .grade_d, .success {
               color: green!important;
             }
-            .fail, .grade_e {
+            .fail, .grade_a {
               color: red!important;
             }
-            .grade_a, .grade_b {
+            .grade_b, .grade_c {
               color: orange!important;
             }
             .pr-image {
               margin-left: 5%;
               margin-right: 5%; 
               width: 39%;
-              height: 500px;
+              height: 400px;
             }
             h4 {
               padding-left: 5%;
@@ -192,7 +199,7 @@ export class TestAndTrainingPageComponent implements OnInit {
               margin-left: 1.25%;
               margin-right: 1.25%;
               margin-top: 1.25%;
-              margin-top: 1.25%;
+              margin-bottom: 1.25%;
               border: 1px solid black;
             }
             .pr-header-logo {
@@ -216,6 +223,12 @@ export class TestAndTrainingPageComponent implements OnInit {
               padding-top: 2%;
               text-align: center;
             }
+            @media print {
+              .pagebreak {
+                  clear: both;
+                  page-break-after: always;
+              }
+          }
           </style>
         </head>
         <body onload="window.print();window.close()">
@@ -265,9 +278,12 @@ export class TestAndTrainingPageComponent implements OnInit {
     </tr>
     </tbody>
     </table>
-      `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 86: Grade D, 85 - 71: Grade C, 70 - 61: Grade B, 60 - 50: Grade A, <50: Grade E </span>` : ``) + `<br/><br/>
-      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+(this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`)+` <br/><br/>
-    </div>
+      `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 81: Grade E, 80 - 61: Grade D, 60 - 41: Grade C, 40 - 31: Grade B, <30: Grade A </span>` : ``) + `<br/><br/>
+      <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+ (this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`) + ` <br/>
+      <div style="height: 50px"></div>
+      <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
+      </div>
+    `+ (toBePrinted.status === 'Fail' ? `<div class="pagebreak"> </div><div class="body-content"><span>Regards</span></div>` : ``) + `
     </body>
     </html>`
     );

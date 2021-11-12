@@ -18,6 +18,21 @@ export class TestDetailsFormComponent implements OnInit {
   constructor(private formService: FormService, private router: Router) { }
 
   ngOnInit(): void {
+    this.testDetails.dateOfTest = this.formatDate(new Date().toDateString());
+  }
+
+  formatDate(dateString: string): string {
+    var d = new Date(dateString),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
   }
 
   onSubmit(e: Event): void {

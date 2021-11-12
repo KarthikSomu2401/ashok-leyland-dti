@@ -2,9 +2,9 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 :root {
-    --primary-color: #faa064;
+    --primary-color: #49d4d4;
     --success-color: green;
-    --primary-color-hover: #fa7e2b;
+    --primary-color-hover: #219999;
 }
 
 .navbar-color {

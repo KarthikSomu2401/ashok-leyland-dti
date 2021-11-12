@@ -17,6 +17,7 @@ export class TestDetailsForm {
     public startTime?: string;
     public endTime?: string;
     public isCompleted?: boolean;
+    public overall?: number;
 
     constructor() { }
 
