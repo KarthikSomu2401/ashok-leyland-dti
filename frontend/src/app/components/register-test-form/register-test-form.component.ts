@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormService } from 'src/app/_services/form.service';
 
 @Component({
   selector: 'app-register-test-form',
@@ -14,7 +13,7 @@ export class RegisterTestFormComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.formName = "user_testing_form";
+    this.formName = "Computer skill analysis form";
     this.isFormFetched = true;
   }
 

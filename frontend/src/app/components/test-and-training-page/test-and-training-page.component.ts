@@ -238,10 +238,10 @@ export class TestAndTrainingPageComponent implements OnInit {
             <div class="body-content">
             <div style="width: 97.5%">
             <img src="../assets/images/logo.png" class="pr-header-logo"></img>
-            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute</h3><p>Vallipuram, Namakkal, Tamil Nadu - 637003.</p></span>
+            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute<br><span style="font-size:0.7em">(COMPUTERISED DRIVING SKILL ANALYSIS SYSTEM)</span></h3><p>Vallipuram, Namakkal, Tamil Nadu - 637003.</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
-            <hr>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center>` : `<center><h4><u>TEST REPORT</u></h4></center>`) + `<br/>
+            <hr>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center>` : `<center><h4><u>TEST REPORT</u></h4></center>`) + `
             <table style="text-align: left">
               <tr>
                 <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
@@ -285,8 +285,7 @@ export class TestAndTrainingPageComponent implements OnInit {
       <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+ (this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`) + ` <br/>
       <div style="height: 58px"></div>
       <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
-      </div>
-    `+ (toBePrinted.status === 'Fail' ? `<div class="pagebreak"></div>
+      </div><div class="pagebreak"></div>
     <div class="body-content">
     <div class="body-note">
     <h3 style="text-decoration: underline">NOTE:</h3>
@@ -300,7 +299,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     <li>Grade is assigned based on the effective time duration of his/her driving in the test track.</li>
     </ol>
     </div><div style="height: 80%"></div>
-    </div>` : ``) + `
+    </div>
     </body>
     </html>`
     );

@@ -1,7 +1,9 @@
 <div class="container report-container">
     <h4 class="heading text-primary">
-        <u>TEST / TRAINING REPORT <span *ngIf="isDetailsFetched">
-                <span *ngIf="testDetails.testType === 'Training'">- ATTEMPT {{testDetails.attempt}}</span>
+        <u>
+            <span *ngIf="isDetailsFetched">
+                <span *ngIf="testDetails.testType === 'Training'">TRAINING REPORT - ATTEMPT {{testDetails.attempt}}</span>
+                <span *ngIf="testDetails.testType !== 'Training'">TEST REPORT</span>
             </span>
         </u>
         <button *ngIf="isPrintEnabled" class="btn btn-primary" style="float:right" (click)="print(testDetails)">
@@ -13,37 +15,40 @@
     </div>
     <div class="col-lg-12 col-md-12 col-sm-12" *ngIf="isDetailsFetched">
         <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <label *ngIf="testDetails.testType === 'Training'">Date of Training</label>
+                <label *ngIf="testDetails.testType !== 'Training'">Date of Test</label>
+                <p>{{testDetails.dateOfTest}}</p><br/>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <label>DL No </label>
-                <p>{{testDetails.dlNo}}</p><br />
-                <label>Candidate Name </label>
-                <p>{{testDetails.candidateName}}</p><br />
-                <label>Date of Test / Training </label>
-                <p>{{testDetails.dateOfTest}}</p>
+                <p>{{testDetails.dlNo}}</p><br/>
+                <label>Vehicle Type </label>
+                <p>{{testDetails.vehicleType}} ({{testDetails.vehicleSubType}})</p><br/>
+                <label>Trainer Name</label>
+                <p>{{testDetails.trainerName}}</p>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
+                <label>Candidate Name </label>
+                <p>{{testDetails.candidateName}}</p><br/>
                 <label>Vehicle Number </label>
-                <p>{{testDetails.vehicleNumber}}</p><br />
-                <label>Trainer Name</label>
-                <p>{{testDetails.trainerName}}</p><br />
-                <label>Vehicle Type </label>
-                <p>{{testDetails.vehicleType}} ({{testDetails.vehicleSubType}})</p>
+                <p>{{testDetails.vehicleNumber}}</p>
             </div>
         </div>
         <br>
         <div class="form-group" *ngIf="testDetails.isCompleted && !isPrintEnabled && !isRemarked">
             <label> Comments </label>
             <textarea class="form-control" [(ngModel)]="testDetails.remarks" required></textarea>
-            <br />
+            <br/>
             <button class="btn btn-danger" style="float: right; width: 10%" (click)="addRemarks(testDetails._id)">Add
                 Remarks</button>
-            <br />
         </div>
         <br>
         <div class="form-group" *ngIf="isRemarked">
             <label> Comments </label>
             <textarea class="form-control" [(ngModel)]="testDetails.remarks" disabled></textarea>
-            <br />
         </div>
         <br>
         <div class="row">
