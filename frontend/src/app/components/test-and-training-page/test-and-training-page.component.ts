@@ -244,23 +244,19 @@ export class TestAndTrainingPageComponent implements OnInit {
             <hr>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center>` : `<center><h4><u>TEST REPORT</u></h4></center>`) + `
             <table style="text-align: left">
               <tr>
-                <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td></td>
-              </tr>
-              <tr>
-                <td><b>Candidate Name :</b> ${toBePrinted.candidateName}</td><td></td>
-              </tr>
-              <tr>
-                <td><b>Date of ${toBePrinted.testType} :</b> ${toBePrinted.dateOfTest}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
+                <td><b>Date of ${toBePrinted.testType} :</b> ${toBePrinted.dateOfTest}</td><td></td>
               </tr>
               <tr>
                 <td><b>Start Time :</b> ${this.splitTimeOnly(toBePrinted.startTime)}</td><td><b>End Time :</b> ${this.splitTimeOnly(toBePrinted.endTime)}</td>
               </tr>
               <tr>
-                <td><b>Trainer Name :</b> ${toBePrinted.trainerName}</td><td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td>
+                <td><b>DL No :</b> ${toBePrinted.dlNo}</td><td><b>Candidate Name :</b> ${toBePrinted.candidateName}</td>
               </tr>
-              <tr></tr>
               <tr>
-                <td colspan="2"><b>Remarks :</b> ${toBePrinted.remarks}</td>
+                <td><b>Vehicle No :</b> ${toBePrinted.vehicleNumber}</td><td><b>Vehicle Type :</b> ${toBePrinted.vehicleType} (${toBePrinted.vehicleSubType})</td>
+              </tr>
+              <tr>
+                <td><b>Trainer Name :</b> ${toBePrinted.trainerName}</td><td><b>Remarks :</b> ${toBePrinted.remarks}</td>
               </tr>
             </table><br/>
             <table class="pr-table">
