@@ -96,37 +96,6 @@ export class TestAndTrainingPageComponent implements OnInit {
               });
             }
           }
-          /* this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
-          if (response.length > 1 && response[response.length - 1].isLast && !this.testDetails.isCompleted) {
-            this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
-            this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
-            this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
-            this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
-            this.testDetails.isCompleted = true;
-            this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
-            this.formService.updateTestDetails(this.testDetails).subscribe(() => {
-              clearInterval(this.intervalData);
-            });
-            if (this.testDetails.remarks !== undefined) {
-              this.isRemarked = true;
-            }
-          } else {
-            this.testDetails.duration = 0;
-            if (response.length == 1) {
-              this.countupTimerService.startTimer();
-            }
-            if ((response.length - 2) > this.testDetails.sensorCount) {
-              this.testDetails.status = "Fail";
-              this.testDetails.isCompleted = true;
-              this.countupTimerService.stopTimer();
-              this.endTest();
-            } else {
-              this.testDetails.status = "In Progress";
-              this.testDetails.isCompleted = false;
-            }
-            this.isPrintEnabled = false;
-            this.isRemarked = false;
-          } */
         })
       }, 500);
   }
@@ -251,7 +220,7 @@ export class TestAndTrainingPageComponent implements OnInit {
               margin-left: 5%;
               margin-right: 5%; 
               width: 39%;
-              height: 400px;
+              height: 280px;
             }
             h4 {
               padding-left: 5%;
@@ -286,6 +255,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             }
             .body-note {
               padding-left: 5%;
+              font-size: 11px;
             }
             @media print {
               .pagebreak {
@@ -340,10 +310,6 @@ export class TestAndTrainingPageComponent implements OnInit {
     </table>
       `+ (toBePrinted.status !== 'Fail' ? ` <span class= "small-text"> (Duration in %): 100 - 81: Grade E, 80 - 61: Grade D, 60 - 41: Grade C, 40 - 31: Grade B, <30: Grade A </span>` : ``) + `<br/><br/>
       <img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`+ (this.sensorsCrossed.indexOf(",") === -1 && this.hasNumber(this.sensorsCrossed) ? `<img src = "../assets/images/single_sensors/${this.sensorsCrossed.substr(3)}.jpg" class= "pr-image"></image>` : `<img src = "../assets/images/sensor_details.jpg" class= "pr-image"> </img>`) + ` <br/>
-      <div style="height: 58px"></div>
-      <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
-      </div><div class="pagebreak"></div>
-    <div class="body-content">
     <div class="body-note">
     <h3 style="text-decoration: underline">NOTE:</h3>
     <ol>
@@ -355,8 +321,10 @@ export class TestAndTrainingPageComponent implements OnInit {
     </li>
     <li>Grade is assigned based on the effective time duration of his/her driving in the test track.</li>
     </ol>
-    </div><div style="height: 80%"></div>
     </div>
+    <div style="height: 95px"></div>
+      <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
+      </div>
     </body>
     </html>`
     );
