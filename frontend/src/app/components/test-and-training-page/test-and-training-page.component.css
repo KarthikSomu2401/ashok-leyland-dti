@@ -23,6 +23,14 @@ label {
     transform: rotate(90deg);
 }
 
+.test-started {
+    color: green;
+}
+
+.test-completed {
+    color: red;
+}
+
 .timer-design {
     padding: 1%;
     background-color: beige;

@@ -24,6 +24,8 @@ export class TestAndTrainingPageComponent implements OnInit {
   sensorsCrossed: string | any;
   isRemarked: Boolean = false;
   testConfig: any;
+  testActiveStatus: string | any;
+  testActiveStatusBoolean: Boolean = false;
 
   constructor(private activatedroute: ActivatedRoute, private countupTimerService: CountupTimerService, private formService: FormService, private testStatusService: TestStatusService) {
   }
@@ -47,13 +49,54 @@ export class TestAndTrainingPageComponent implements OnInit {
     this.testConfig.timerTexts.secondsText = "Seconds"; //default - ss
   }
 
+  preventWindowRefresh(): void {
+    window.addEventListener("beforeunload", function (e) {
+      var confirmationMessage = "This will reset the clock! Don't try doing this!";
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    });
+  }
+
   ngOnInit(): void {
+    this.preventWindowRefresh();
     this.initiateTimerForTest();
     this.getUserDetails();
     this.intervalData =
       setInterval(() => {
         this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
           this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
+          if (response.length > 1 && response[response.length - 1].isLast) {
+            this.countupTimerService.stopTimer();
+            this.testActiveStatus = "(Test Completed)";
+            this.testActiveStatusBoolean = false;
+            this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
+            this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
+            this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
+            this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
+            this.testDetails.isCompleted = true;
+            this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
+            this.formService.updateTestDetails(this.testDetails).subscribe(() => {
+              clearInterval(this.intervalData);
+            });
+            this.isRemarked = (this.testDetails.remarks !== undefined) ? true : false;
+          } else if (response.length == 1 && response[response.length - 1].isLast) {
+            this.countupTimerService.startTimer();
+            this.testActiveStatus = "(Test Started)";
+            this.testActiveStatusBoolean = true;
+          } else {
+            this.testDetails.duration = new Date().getTime() - new Date(response[0].createdAt).getTime();
+            this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
+            this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
+            if (this.checkVehicleDurationLimits(this.testDetails, this.testDetails.duration)) {
+              this.testStatus.status = "Fail";
+              this.testDetails.isCompleted = true;
+              this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
+              this.formService.updateTestDetails(this.testDetails).subscribe(() => {
+                clearInterval(this.intervalData);
+              });
+            }
+          }
+          /* this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
           if (response.length > 1 && response[response.length - 1].isLast && !this.testDetails.isCompleted) {
             this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
             this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
@@ -83,7 +126,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             }
             this.isPrintEnabled = false;
             this.isRemarked = false;
-          }
+          } */
         })
       }, 500);
   }
@@ -100,6 +143,24 @@ export class TestAndTrainingPageComponent implements OnInit {
         this.testDetails.overall = 330000;
       }
     })
+  }
+
+  checkVehicleDurationLimits(testDetails: TestDetailsForm | any, duration: number): boolean {
+    if (testDetails.vehicleType === "LCV" && duration > testDetails.overall) {
+      return false;
+    } else if (testDetails.vehicleType === "LCV" && duration <= testDetails.overall) {
+      return true;
+    } else if (testDetails.vehicleType === "HCV" && testDetails.vehicleSubType === "Tracker Trailer" && duration > testDetails.overall) {
+      return false;
+    } else if (testDetails.vehicleType === "HCV" && testDetails.vehicleSubType === "Tracker Trailer" && duration <= testDetails.overall) {
+      return true;
+    } else {
+      if (duration > testDetails.overall) {
+        return false;
+      } else {
+        return true;
+      }
+    }
   }
 
   endTest(): void {
