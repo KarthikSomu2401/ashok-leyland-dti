@@ -269,7 +269,7 @@ export class TestAndTrainingPageComponent implements OnInit {
             <div class="body-content">
             <div style="width: 97.5%">
             <img src="../assets/images/logo.png" class="pr-header-logo"></img>
-            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute<br><span style="font-size:0.7em">(COMPUTERISED DRIVING SKILL ANALYSIS SYSTEM)</span></h3><p>Vallipuram, Namakkal, Tamil Nadu - 637003.</p></span>
+            <span style="width: 58.5%; display: inline-block; text-align: center; padding-left: 2%; padding-right: 2%"><h3>Ashok Leyland Driving Training Institute<br><span style="font-size:0.7em">Vallipuram, Namakkal, Tamil Nadu - 637003.</span></h3><p>(COMPUTERISED DRIVING SKILL ANALYSIS SYSTEM)</p></span>
             <img src="../assets/images/company_logo.png" class="pr-header-company-logo"></img>
             </div>
             <hr>`+ (toBePrinted.testType === 'Training' ? `<center><h4><u> TRAINING REPORT - ATTEMPT ${toBePrinted.attempt}</u></h4></center>` : `<center><h4><u>TEST REPORT</u></h4></center>`) + `
@@ -322,7 +322,7 @@ export class TestAndTrainingPageComponent implements OnInit {
     <li>Grade is assigned based on the effective time duration of his/her driving in the test track.</li>
     </ol>
     </div>
-    <div style="height: 95px"></div>
+    <div style="height: 65px"></div>
       <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
       </div>
     </body>
