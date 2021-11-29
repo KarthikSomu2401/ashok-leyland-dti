@@ -324,9 +324,10 @@ export class TestAndTrainingPageComponent implements OnInit {
     <li>Grade is assigned based on the effective time duration of his/her driving in the test track.</li>
     </ol>
     </div>
-    <div style="height: 65px"></div>
+    <div style="height: 60px"></div>
       <div style="padding-left: 3%; padding-right: 3%"><p style="width: 30%; display: inline-block; text-align: center">Trainer</p><p style="width: 30%; display: inline-block; text-align: center">Training Officer</p><p style="width: 30%; display: inline-block; text-align: center">Head DTI</p></div>
       </div>
+      <center><p>Powered by <a href="https://viruksham.co.in" target="_blank">@viruksham technologies</a></p></center>
     </body>
     </html>`
     );
