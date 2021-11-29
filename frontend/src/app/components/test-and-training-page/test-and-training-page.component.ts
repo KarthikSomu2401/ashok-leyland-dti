@@ -25,7 +25,6 @@ export class TestAndTrainingPageComponent implements OnInit {
   isRemarked: Boolean = false;
   testConfig: any;
   testActiveStatus: string | any;
-  testActiveStatusBoolean: Boolean = false;
 
   constructor(private activatedroute: ActivatedRoute, private countupTimerService: CountupTimerService, private formService: FormService, private testStatusService: TestStatusService) {
   }
@@ -64,26 +63,26 @@ export class TestAndTrainingPageComponent implements OnInit {
     this.intervalData =
       setInterval(() => {
         this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
-          this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
-          if (response.length > 1 && response[response.length - 1].isLast) {
+          if (response.length > 1 && response[0].isLast && response[response.length - 1].isLast) {
             this.countupTimerService.stopTimer();
             this.testActiveStatus = "(Test Completed)";
-            this.testActiveStatusBoolean = false;
             this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
             this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
             this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
             this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
             this.testDetails.isCompleted = true;
+            this.testDetails.isActive = false;
             this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
             this.formService.updateTestDetails(this.testDetails).subscribe(() => {
               clearInterval(this.intervalData);
+              console.log('Test Completed!!!');
             });
             this.isRemarked = (this.testDetails.remarks !== undefined) ? true : false;
-          } else if (response.length == 1 && response[response.length - 1].isLast) {
+          } else if (response.length == 1 && response[0].isLast) {
             this.countupTimerService.startTimer();
             this.testActiveStatus = "(Test Started)";
-            this.testActiveStatusBoolean = true;
-          } else {
+            this.testDetails.isActive = true;
+          } else if (this.testDetails.isActive) {
             this.testDetails.duration = new Date().getTime() - new Date(response[0].createdAt).getTime();
             this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
             this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
@@ -95,6 +94,9 @@ export class TestAndTrainingPageComponent implements OnInit {
                 clearInterval(this.intervalData);
               });
             }
+          }
+          if (this.testDetails.isCompleted || this.testDetails.isActive) {
+            this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
           }
         })
       }, 500);

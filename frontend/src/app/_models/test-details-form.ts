@@ -17,6 +17,7 @@ export class TestDetailsForm {
     public startTime?: string;
     public endTime?: string;
     public isCompleted?: boolean = false;
+    public isActive?: boolean = false;
     public overall?: number;
 
     constructor() { }

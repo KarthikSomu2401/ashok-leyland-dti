@@ -13,6 +13,7 @@ let TestDetailsForm = new Schema({
     startTime: { type: String },
     endTime: { type: String },
     isCompleted: { type: Boolean, default: false },
+    isActive: { type: Boolean, default: false },
     vehicleType: { type: String, required: true },
     vehicleSubType: { type: String, required: true },
     attempt: { type: Number },
