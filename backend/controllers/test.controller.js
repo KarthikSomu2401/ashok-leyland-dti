@@ -1,6 +1,9 @@
 const SensorData = require("../models/sensor-data.model");
 const TestDetailsForm = require("../models/test-details-form.model");
 
+getGMTTimeZone = function() {
+    return new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+}
 exports.test_sensor_data = function(req, res, next) {
     TestDetailsForm.findOne({ isCompleted: false }).sort({ 'createdAt': -1 }).exec(function(err, post) {
         if (post != null && req.query.isLast === "1" && !post.isActive) {
@@ -16,7 +19,7 @@ exports.test_sensor_data = function(req, res, next) {
             testDetails.then((response) => {
                 console.log("Test Activated!!!");
                 let sensorData;
-                sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: Date.now() });
+                sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: getGMTTimeZone() });
                 sensorData.save().then((response) => {
                     res.status(200).json({ "message": "Test Activated!!!" });
                 }).catch((error) => {
@@ -27,7 +30,7 @@ exports.test_sensor_data = function(req, res, next) {
             });
         } else if (post != null && post.isActive) {
             let sensorData;
-            sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: Date.now() });
+            sensorData = new SensorData({ sensorId: req.query.sensorId, attempt: post.attempt, dlNo: post.dlNo, isLast: (req.query.isLast === "0" || req.query.isLast === undefined) ? false : true, createdAt: getGMTTimeZone() });
             sensorData.save().then((response) => {
                 res.status(201).json(response);
             }).catch((error) => {

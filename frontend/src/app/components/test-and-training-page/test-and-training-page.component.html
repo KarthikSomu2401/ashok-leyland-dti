@@ -53,7 +53,7 @@
         <br>
         <div class="row">
             <div>
-                <button class="btn btn-danger" style="float: right; width: 10%" *ngIf="!testDetails.isCompleted"
+                <button class="btn btn-danger" style="float: right; width: 10%" *ngIf="testDetails.isActive"
                     (click)="endTest()">End Test</button>
                 <h4>Test Result <span [ngClass]="testDetails.isActive ? 'test-started' : 'test-completed'" >{{testActiveStatus}}</span></h4>
             </div>

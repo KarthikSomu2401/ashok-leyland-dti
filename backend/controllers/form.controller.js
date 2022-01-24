@@ -1,4 +1,9 @@
 const TestDetailsForm = require("../models/test-details-form.model");
+const moment = require('moment-timezone').tz.setDefault('Asia/Kolkata');
+
+getGMTTimeZone = function() {
+    return new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+}
 
 exports.create_test = function(req, res, next) {
     let testDetails = TestDetailsForm.find({
@@ -18,7 +23,7 @@ exports.create_test = function(req, res, next) {
                 vehicleType: req.body.vehicleType,
                 vehicleSubType: req.body.vehicleSubType,
                 attempt: count + 1,
-                createdAt: Date.now()
+                createdAt: getGMTTimeZone()
             });
             testDetailsForm.save().then((response) => {
                 res.status(201).json(response);
@@ -54,7 +59,7 @@ exports.start_test = function(req, res, next) {
         _id: req.params['testId']
     };
     var updateValues = {
-        createdAt: Date.now()
+        createdAt: getGMTTimeZone()
     };
     let testDetails = TestDetailsForm.findOneAndUpdate(filter, updateValues);
     testDetails.then((response) => {

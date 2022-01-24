@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormService } from 'src/app/_services/form.service';
 import { TestDetailsForm } from 'src/app/_models/test-details-form';
 import { TestStatusService } from 'src/app/_services/test-status.service';
-import { TestStatus } from 'src/app/_models/test-status';
 import { faPrint } from '@fortawesome/free-solid-svg-icons';
 import { countUpTimerConfigModel, timerTexts, CountupTimerService } from 'ngx-timer';
+import * as moment from 'moment-timezone';
 
 
 @Component({
@@ -19,7 +19,6 @@ export class TestAndTrainingPageComponent implements OnInit {
   routeState: any;
   faPrint = faPrint;
   isPrintEnabled: Boolean = false;
-  testStatus: TestStatus[] | any;
   isDetailsFetched: Boolean = false;
   sensorsCrossed: string | any;
   isRemarked: Boolean = false;
@@ -57,12 +56,14 @@ export class TestAndTrainingPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    moment.tz.setDefault('Asia/Kolkata');
     this.preventWindowRefresh();
     this.initiateTimerForTest();
     this.getUserDetails();
-    this.intervalData =
-      setInterval(() => {
+    this.intervalData = setInterval(() => {
+      console.log(moment().format());
         this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
+          console.log(moment().milliseconds(), moment(response[0].createdAt).milliseconds(), moment().milliseconds()-moment(response[0].createdAt).milliseconds());
           if (response.length > 1 && response[0].isLast && response[response.length - 1].isLast) {
             this.countupTimerService.stopTimer();
             this.testActiveStatus = "(Test Completed)";
@@ -78,25 +79,28 @@ export class TestAndTrainingPageComponent implements OnInit {
               console.log('Test Completed!!!');
             });
             this.isRemarked = (this.testDetails.remarks !== undefined) ? true : false;
-          } else if (response.length == 1 && response[0].isLast) {
-            this.countupTimerService.startTimer();
-            this.testActiveStatus = "(Test Started)";
-            this.testDetails.isActive = true;
-          } else if (this.testDetails.isActive) {
-            this.testDetails.duration = new Date().getTime() - new Date(response[0].createdAt).getTime();
-            this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
-            this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
+          } else if (this.testDetails.isActive) {            
+            this.testActiveStatus = "(Test InProgress)";
+            this.testDetails.duration = new Date(moment().toLocaleString()).getTime() - new Date(response[0].createdAt).getTime();
+            console.log(moment().milliseconds(), moment(response[0].createdAt).milliseconds(), moment().milliseconds()-moment(response[0].createdAt).milliseconds());
+            this.sensorsCrossed = response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
+            this.testDetails.status = "In Progress";
             if (this.checkVehicleDurationLimits(this.testDetails, this.testDetails.duration)) {
-              this.testStatus.status = "Fail";
+              this.testDetails.status = "Fail";
+              this.testActiveStatus = "(Test Completed)";
               this.testDetails.isCompleted = true;
+              this.testDetails.isActive = false;
               this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
               this.formService.updateTestDetails(this.testDetails).subscribe(() => {
                 clearInterval(this.intervalData);
               });
             }
-          }
-          if (this.testDetails.isCompleted || this.testDetails.isActive) {
-            this.sensorsCrossed = "LS " + response.filter((sensor: { isLast: boolean; sensorId: number }) => sensor.isLast === false).map((sensor: { sensorId: number; }) => sensor.sensorId).join(",");
+          } else if (response.length == 1 && response[0].isLast) {
+            this.countupTimerService.startTimer();
+            this.testActiveStatus = "(Test Started)";
+            this.testDetails.isActive = true;            
+            this.testDetails.status = "Started";
+            console.log('Test Started!!!');
           }
         })
       }, 500);
@@ -136,14 +140,18 @@ export class TestAndTrainingPageComponent implements OnInit {
 
   endTest(): void {
     this.testStatusService.getTestStatus(this.testDetails.dlNo, this.testDetails.attempt).subscribe((response) => {
+      this.countupTimerService.stopTimer();
+      this.testActiveStatus = "(Test Completed)";
       this.testDetails.duration = new Date(response[response.length - 1].createdAt).getTime() - new Date(response[0].createdAt).getTime();
       this.testDetails.startTime = this.getTimeFromGMTTime(response[0].createdAt);
       this.testDetails.endTime = this.getTimeFromGMTTime(response[response.length - 1].createdAt);
       this.testDetails.status = (response.length - 2) > this.testDetails.sensorCount ? "Fail" : this.checkPercentage(this.testDetails.duration, this.testDetails.overall);
       this.testDetails.isCompleted = true;
+      this.testDetails.isActive = false;
       this.isPrintEnabled = (this.testDetails.remarks !== undefined) ? true : false;
       this.formService.updateTestDetails(this.testDetails).subscribe(() => {
         clearInterval(this.intervalData);
+        console.log('Test Completed!!!');
       });
     });
   }
